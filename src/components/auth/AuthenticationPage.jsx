@@ -7,7 +7,7 @@ import { setLoginMethod, clearError } from '../../redux/slices/authSlices'
 import PhoneLogin from './PhoneLogin'
 import OTPVerification from './OTPVerification'
 import NameRegistration from './NameRegistration'
-import SSOLogin from './SSOLogin'
+// import SSOLogin from './SSOLogin'
 
 const AuthenticationPage = () => {
   const dispatch = useDispatch()
@@ -58,9 +58,7 @@ const AuthenticationPage = () => {
       } else {
         return <PhoneLogin />
       }
-    } else {
-      return <SSOLogin />
-    }
+    } 
   }
 
   return (
@@ -155,82 +153,6 @@ const AuthenticationPage = () => {
             </p>
           </div>
         )}
-
-        {/* Login Method Toggle - Don't show for name registration or OTP */}
-        {/* {!showNameInput && !showOtpInput && (
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            padding: '6px',
-            borderRadius: '16px',
-            marginBottom: '24px',
-            display: 'flex',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)'
-          }}>
-            <button
-              onClick={() => handleMethodChange('phone')}
-              disabled={isLoading}
-              style={{
-                flex: '1',
-                padding: '12px 20px',
-                borderRadius: '12px',
-                border: 'none',
-                background: loginMethod === 'phone' 
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                  : 'transparent',
-                color: loginMethod === 'phone' ? '#ffffff' : '#666',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                fontFamily: 'inherit',
-                outline: 'none',
-                boxShadow: loginMethod === 'phone' 
-                  ? '0 4px 12px rgba(102, 126, 234, 0.4)' 
-                  : 'none'
-              }}
-            >
-              <Phone style={{ width: '16px', height: '16px' }} />
-              Phone
-            </button>
-            
-            <button
-              onClick={() => handleMethodChange('sso')}
-              disabled={isLoading}
-              style={{
-                flex: '1',
-                padding: '12px 20px',
-                borderRadius: '12px',
-                border: 'none',
-                background: loginMethod === 'sso' 
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                  : 'transparent',
-                color: loginMethod === 'sso' ? '#ffffff' : '#666',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                fontFamily: 'inherit',
-                outline: 'none',
-                boxShadow: loginMethod === 'sso' 
-                  ? '0 4px 12px rgba(102, 126, 234, 0.4)' 
-                  : 'none'
-              }}
-            >
-              <Mail style={{ width: '16px', height: '16px' }} />
-              SSO
-            </button>
-          </div>
-        )} */}
 
         {/* Main Authentication Card */}
         <div style={{

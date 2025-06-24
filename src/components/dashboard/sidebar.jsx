@@ -1,55 +1,7 @@
-// import React from 'react';
-// import {
-//   Home,
-//   Package,
-//   Bell,
-//   ShoppingCart,
-//   Users,
-//   Settings,
-// } from 'lucide-react';
-
-// const Sidebar = () => {
-//   const menuItems = [
-//     { label: 'Home', icon: Home },
-//     { label: 'Orders', icon: ShoppingCart },
-//     { label: 'Products', icon: Package },
-//     { label: 'Alerts', icon: Bell },
-//     { label: 'Customers', icon: Users },
-//     { label: 'Settings', icon: Settings },
-//   ];
-
-//   const activeItem = 'Home'; // You can replace this with a state or router logic
-
-//   return (
-//     <aside className="w-64 h-screen bg-white border-r shadow-sm p-6 flex flex-col">
-//       <div className="mb-8">
-//         <h2 className="text-2xl font-semibold text-gray-800">Vendor Hub</h2>
-//         <p className="text-sm text-gray-500 mt-1">Welcome back, John!</p>
-//       </div>
-
-//       <ul className="space-y-2">
-//         {menuItems.map(({ label, icon: Icon }) => {
-//           const isActive = label === activeItem;
-
-//           return (
-//             <li
-//               key={label}
-//               className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-150
-//               ${isActive ? 'bg-blue-100 text-blue-600' : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600'}`}
-//             >
-//               <Icon size={20} />
-//               <span>{label}</span>
-//             </li>
-//           );
-//         })}
-//       </ul>
-//     </aside>
-//   );
-// };
-
-// export default Sidebar;
-
+// src/components/dashboard/sidebar.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Drawer,
@@ -93,12 +45,16 @@ import {
 
 const Sidebar = ({ open, onToggle,variant }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const [expandedItems, setExpandedItems] = useState({});
   const [hoveredItem, setHoveredItem] = useState(null);
   const [activeItem, setActiveItem] = useState('dashboard');
 
   const drawerWidth = 280;
   const collapsedWidth = 80;
+
+  
 
   const handleExpandClick = (itemId) => {
     setExpandedItems(prev => ({
@@ -118,10 +74,9 @@ const Sidebar = ({ open, onToggle,variant }) => {
       id: 'products',
       title: 'Products',
       icon: <Package size={20} />,
-      badge: '124',
       subItems: [
-        { id: 'all-products', title: 'All Products', badge: '124' },
-        { id: 'add-product', title: 'Add Product' },
+        { id: 'all-products', title: 'All Products'},
+        { id: 'add-product', title: 'Add Product' , path: '/add-product'},
         { id: 'categories', title: 'Categories' },
         { id: 'inventory', title: 'Inventory' },
       ]
@@ -130,12 +85,12 @@ const Sidebar = ({ open, onToggle,variant }) => {
       id: 'orders',
       title: 'Orders',
       icon: <ShoppingCart size={20} />,
-      badge: '12',
+      // badge: '12',
       badgeColor: 'warning',
       subItems: [
-        { id: 'all-orders', title: 'All Orders', badge: '48' },
-        { id: 'pending', title: 'Pending', badge: '12', badgeColor: 'warning' },
-        { id: 'processing', title: 'Processing', badge: '5' },
+        { id: 'all-orders', title: 'All Orders' },
+        { id: 'pending', title: 'Pending', badgeColor: 'warning' },
+        { id: 'processing', title: 'Processing'},
         { id: 'completed', title: 'Completed' },
         { id: 'cancelled', title: 'Cancelled' },
       ]
@@ -144,7 +99,6 @@ const Sidebar = ({ open, onToggle,variant }) => {
       id: 'customers',
       title: 'Customers',
       icon: <Users size={20} />,
-      badge: '2.4k',
     },
     {
       id: 'analytics',
@@ -161,7 +115,6 @@ const Sidebar = ({ open, onToggle,variant }) => {
       id: 'payments',
       title: 'Payments',
       icon: <CreditCard size={20} />,
-      badge: '3',
       badgeColor: 'error',
     },
     {
@@ -183,14 +136,12 @@ const Sidebar = ({ open, onToggle,variant }) => {
       id: 'reviews',
       title: 'Reviews',
       icon: <Star size={20} />,
-      badge: '4.5',
       badgeColor: 'success',
     },
     {
       id: 'messages',
       title: 'Messages',
       icon: <MessageSquare size={20} />,
-      badge: '7',
     },
   ];
 
@@ -224,6 +175,7 @@ const Sidebar = ({ open, onToggle,variant }) => {
           button
           onClick={() => {
             setActiveItem(item.id);
+            if (item.path) navigate(item.path);
             if (hasSubItems) handleExpandClick(item.id);
           }}
           onMouseEnter={() => setHoveredItem(item.id)}

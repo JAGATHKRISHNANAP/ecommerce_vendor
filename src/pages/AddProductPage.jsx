@@ -1,11 +1,11 @@
-// src/pages/Dashboard.jsx
+// src/pages/AddProductPage.jsx
 import React, { useState } from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import AppHeader from '../components/dashboard/Header';
-import HeroSection from '../components/dashboard/HeroSection';
 import Sidebar from '../components/dashboard/sidebar';
+import AddProductWithImages from '../components/addProduct/addProduct';
 
-const Dashboard = () => {
+const AddProductPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // screen < 600px
 
@@ -42,11 +42,11 @@ const Dashboard = () => {
         <AppHeader onToggleSidebar={handleSidebarToggle} />
 
         <Box sx={{ p: 3, mt: 8 }}>
-          <HeroSection />
+          <AddProductWithImages />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Dashboard;
+export default AddProductPage;

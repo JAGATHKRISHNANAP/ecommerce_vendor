@@ -4,6 +4,8 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import AuthenticationPage from './components/auth/AuthenticationPage'
 import Dashboard from './pages/Dashboard'
+import AddProductPage from './pages/AddProductPage'
+import NameRegistration from './components/auth/NameRegistration'
 
 // Simple 404 component
 const NotFound = () => {
@@ -108,6 +110,23 @@ const AppRouter = () => {
           <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute>
+        } 
+      />
+
+            <Route 
+        path="/add-product" 
+        element={
+          <ProtectedRoute>
+            <AddProductPage />
+          </ProtectedRoute>
+        } 
+      />
+                  <Route 
+        path="/name-registration" 
+        element={
+          // <ProtectedRoute>
+            <NameRegistration />
+          // </ProtectedRoute>
         } 
       />
       
