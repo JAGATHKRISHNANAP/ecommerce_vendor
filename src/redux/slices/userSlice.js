@@ -279,7 +279,7 @@
 
 // src/redux/slices/cartSlice.js - Fixed version
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { cartAPI } from '../../services/api/cartAPI'
+// import { cartAPI } from '../../services/api/cartAPI'
 
 // Async Thunks
 export const addToCart = createAsyncThunk(
