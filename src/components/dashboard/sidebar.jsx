@@ -69,6 +69,7 @@ const Sidebar = ({ open, onToggle,variant }) => {
       title: 'Dashboard',
       icon: <Home size={20} />,
       badge: null,
+      path: '/dashboard',
     },
     {
       id: 'products',

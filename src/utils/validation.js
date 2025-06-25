@@ -24,6 +24,23 @@ export const validatePhoneNumber = (phoneNumber) => {
   return { isValid: true, error: null }
 }
 
+
+
+export const validateAadhar = (aadhar) => ({
+  isValid: /^\d{12}$/.test(aadhar),
+  error: 'Aadhar must be 12 digits'
+});
+
+export const validateIFSC = (ifsc) => ({
+  isValid: /^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc.toUpperCase()),
+  error: 'Invalid IFSC code'
+});
+
+
+
+
+
+
 // Email validation
 export const validateEmail = (email) => {
   if (!email || email.trim() === '') {

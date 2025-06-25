@@ -35,6 +35,8 @@ export const verifyOTP = createAsyncThunk(
         setRefreshToken(response.refresh_token)
       }
       setStoredUser(response.user)
+
+      console.log('User data after verification:', response.user)
       
       return response
     } catch (error) {
@@ -43,7 +45,7 @@ export const verifyOTP = createAsyncThunk(
   }
 )
 
-export const completeRegistration = createAsyncThunk(
+export const completeRegistrationoriginal = createAsyncThunk(
   'auth/completeRegistration',
   async ({ phoneNumber, name }, { rejectWithValue }) => {
     try {
@@ -60,6 +62,23 @@ export const completeRegistration = createAsyncThunk(
     }
   }
 )
+export const completeRegistration = createAsyncThunk(
+  'auth/completeRegistration',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.completeRegistration(formData);
+
+      if (response.user) {
+        setStoredUser(response.user);
+      }
+
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.detail || error.message || 'Failed to complete registration');
+    }
+  }
+);
+
 
 // export const completeRegistration = createAsyncThunk(
 //   'auth/completeRegistration',

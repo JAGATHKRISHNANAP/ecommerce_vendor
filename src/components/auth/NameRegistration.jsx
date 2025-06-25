@@ -248,84 +248,258 @@
 // export default NameRegistration
 
 
-// src/components/auth/NameRegistration.jsx
+// // src/components/auth/NameRegistration.jsx
+// import React, { useState } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { completeRegistration } from '../../redux/slices/authSlices';
+// import { validateName } from '../../utils/validation';
+// import ErrorMessage from '../ui/ErrorMessage';
+// import LoadingSpinner from '../ui/LoadingSpinner';
+
+// const NameRegistration = () => {
+//   const dispatch = useDispatch();
+//   const { isLoading, error, phoneNumber } = useSelector(state => state.auth);
+//   const [name, setName] = useState('');
+//   const 
+//   const [nameError, setNameError] = useState('');
+//   const [isFocused, setIsFocused] = useState(false);
+
+//   const handleNameChange = (e) => {
+//     const value = e.target.value;
+//     setName(value);
+//     if (nameError) setNameError('');
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     const validation = validateName(name, 'Name');
+//     if (!validation.isValid) {
+//       setNameError(validation.error);
+//       return;
+//     }
+
+//     dispatch(completeRegistration({
+//       phoneNumber,
+//       name: name.trim(),
+//     }));
+//   };
+
+//   return (
+//     <div>
+//       <h2>Welcome! Let's get to know you</h2>
+//       <p>Please enter your name to complete registration</p>
+//       <p>Phone verified: {phoneNumber}</p>
+
+//       <form onSubmit={handleSubmit}>
+//         <div>
+//           <input
+//             type="text"
+//             value={name}
+//             onChange={handleNameChange}
+//             onFocus={() => setIsFocused(true)}
+//             onBlur={() => setIsFocused(false)}
+//             placeholder="Enter your full name"
+//             disabled={isLoading}
+//             autoFocus
+//           />
+//           {nameError && <div>{nameError}</div>}
+//         </div>
+
+//         {error && <ErrorMessage message={error} />}
+
+//         <button type="submit" disabled={isLoading || !name.trim()}>
+//           {isLoading ? (
+//             <>
+//               <LoadingSpinner size="small" color="white" />
+//               <span>Creating your account...</span>
+//             </>
+//           ) : (
+//             <>
+//               <span>Complete Registration</span>
+//             </>
+//           )}
+//         </button>
+//       </form>
+
+//       <p>Your information is secure and will only be used to personalize your experience</p>
+//     </div>
+//   );
+// };
+
+// export default NameRegistration;
+
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { completeRegistration } from '../../redux/slices/authSlices';
-import { validateName } from '../../utils/validation';
+import { validateName, validateEmail, validateAadhar, validateIFSC } from '../../utils/validation';
 import ErrorMessage from '../ui/ErrorMessage';
 import LoadingSpinner from '../ui/LoadingSpinner';
 
 const NameRegistration = () => {
   const dispatch = useDispatch();
   const { isLoading, error, phoneNumber } = useSelector(state => state.auth);
-  const [name, setName] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
 
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    setName(value);
-    if (nameError) setNameError('');
+  const [formData, setFormData] = useState({
+    vendor_photo: null,
+    full_name: '',
+    phone_number: phoneNumber || '',
+    email: '',
+    aadhar_number: '',
+    personal_address: '',
+    business_name: '',
+    business_type: '',
+    gst_number: '',
+    business_address: '',
+    account_holder_name: '',
+    account_number: '',
+    ifsc_code: ''
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: files ? files[0] : value
+    }));
+    setFormErrors(prev => ({ ...prev, [name]: '' }));
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    const { full_name, email, aadhar_number, business_name, business_address, account_holder_name, account_number, ifsc_code, gst_number } = formData;
+
+    if (!full_name.trim()) errors.full_name = 'Full name is required';
+    // if (!/^\d{10}$/.test(phone_number)) errors.phone_number = 'Phone number must be 10 digits';
+    if (email && !validateEmail(email).isValid) errors.email = 'Invalid email format';
+    if (!/^\d{12}$/.test(aadhar_number)) errors.aadhar_number = 'Aadhar number must be 12 digits';
+    if (!business_name.trim()) errors.business_name = 'Business name is required';
+    if (!business_address.trim()) errors.business_address = 'Business address is required';
+    if (!account_holder_name.trim()) errors.account_holder_name = 'Account holder name is required';
+    if (!account_number.trim()) errors.account_number = 'Account number is required';
+    if (!validateIFSC(ifsc_code).isValid) errors.ifsc_code = 'Invalid IFSC code';
+    if (!formData.personal_address.trim()) {
+  errors.personal_address = 'Personal address is required';
+}
+
+    if (gst_number && !/^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1})$/.test(gst_number)) {
+      errors.gst_number = 'Invalid GST number';
+    }
+    
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validation = validateName(name, 'Name');
-    if (!validation.isValid) {
-      setNameError(validation.error);
-      return;
-    }
+    if (!validateForm()) return;
 
-    dispatch(completeRegistration({
-      phoneNumber,
-      name: name.trim(),
-    }));
+    const payload = {
+      ...formData,
+      phoneNumber: formData.phone_number,
+      name: formData.full_name.trim()
+    };
+
+    dispatch(completeRegistration(payload));
   };
 
   return (
     <div>
-      <h2>Welcome! Let's get to know you</h2>
-      <p>Please enter your name to complete registration</p>
-      <p>Phone verified: {phoneNumber}</p>
-
+      <h2>Vendor Registration</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            value={name}
-            onChange={handleNameChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            placeholder="Enter your full name"
-            disabled={isLoading}
-            autoFocus
-          />
-          {nameError && <div>{nameError}</div>}
-        </div>
+
+        <fieldset>
+          <legend>🧍 Personal Information</legend>
+          <div>
+            <label>Profile Photo</label>
+            <input type="file" name="vendor_photo" accept="image/*" onChange={handleChange} />
+          </div>
+          <div>
+            <input type="text" name="full_name" placeholder="Full Name" value={formData.full_name} onChange={handleChange} />
+            {formErrors.full_name && <div>{formErrors.full_name}</div>}
+          </div>
+          <div>
+            <input type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} />
+            {formErrors.phone_number && <div>{formErrors.phone_number}</div>}
+          </div>
+          <div>
+            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+            {formErrors.email && <div>{formErrors.email}</div>}
+          </div>
+          <div>
+            <input type="text" name="aadhar_number" placeholder="Aadhar Number" value={formData.aadhar_number} onChange={handleChange} />
+            {formErrors.aadhar_number && <div>{formErrors.aadhar_number}</div>}
+          </div>
+          <div>
+  <input
+    type="text"
+    name="personal_address"
+    placeholder="Personal Address"
+    value={formData.personal_address}
+    onChange={handleChange}
+  />
+  {formErrors.personal_address && <div>{formErrors.personal_address}</div>}
+</div>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>🏢 Business Details</legend>
+          <div>
+            <input type="text" name="business_name" placeholder="Business Name" value={formData.business_name} onChange={handleChange} />
+            {formErrors.business_name && <div>{formErrors.business_name}</div>}
+          </div>
+          <div>
+            <input type="text" name="business_type" placeholder="Business Type" value={formData.business_type} onChange={handleChange} />
+          </div>
+          <div>
+            <input type="text" name="gst_number" placeholder="GST Number (optional)" value={formData.gst_number} onChange={handleChange} />
+            {formErrors.gst_number && <div>{formErrors.gst_number}</div>}
+          </div>
+          <div>
+            <input type="text" name="business_address" placeholder="Business Address" value={formData.business_address} onChange={handleChange} />
+            {formErrors.business_address && <div>{formErrors.business_address}</div>}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>🏦 Bank Details</legend>
+          <div>
+            <input type="text" name="account_holder_name" placeholder="Account Holder Name" value={formData.account_holder_name} onChange={handleChange} />
+            {formErrors.account_holder_name && <div>{formErrors.account_holder_name}</div>}
+          </div>
+          <div>
+            <input type="text" name="account_number" placeholder="Account Number" value={formData.account_number} onChange={handleChange} />
+            {formErrors.account_number && <div>{formErrors.account_number}</div>}
+          </div>
+          <div>
+            <input type="text" name="ifsc_code" placeholder="IFSC Code" value={formData.ifsc_code} onChange={handleChange} />
+            {formErrors.ifsc_code && <div>{formErrors.ifsc_code}</div>}
+          </div>
+        </fieldset>
 
         {error && <ErrorMessage message={error} />}
-
-        <button type="submit" disabled={isLoading || !name.trim()}>
+        <button type="submit" disabled={isLoading}>
           {isLoading ? (
             <>
               <LoadingSpinner size="small" color="white" />
-              <span>Creating your account...</span>
+              <span>Submitting...</span>
             </>
           ) : (
-            <>
-              <span>Complete Registration</span>
-            </>
+            <span>Register Vendor</span>
           )}
         </button>
       </form>
-
-      <p>Your information is secure and will only be used to personalize your experience</p>
     </div>
   );
 };
 
 export default NameRegistration;
+
+
+
 
 
 // import React, { useState } from 'react';

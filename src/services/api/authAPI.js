@@ -68,23 +68,68 @@ export const authAPI = {
     }
   },
 
-  // Complete registration (add name)
-  completeRegistration: async (phoneNumber, name) => {
-    try {
-      const response = await api.post('/auth/complete-registration', {
-        phone_number: phoneNumber,
-        name: name,
-      })
-      return response.data
-    } catch (error) {
-      throw error.response?.data || error
+  // // Complete registration (add name)
+  // completeRegistration: async (phoneNumber, name) => {
+  //   try {
+  //     const response = await api.post('/auth/complete-registration', {
+  //       phone_number: phoneNumber,
+  //       name: name,
+  //     })
+  //     return response.data
+  //   } catch (error) {
+  //     throw error.response?.data || error
+  //   }
+  // },
+
+completeRegistration: async (data) => {
+  try {
+    const formData = new FormData();
+
+    // Append all form fields
+    for (const key in data) {
+      if (data[key]) {
+        formData.append(key, data[key]);
+      }
     }
-  },
+
+    const response = await api.post('/auth/complete-registration', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // 👈 required!
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+},
+
+
+
+//   completeRegistration: async (data) => {
+//   try {
+//     const formData = new FormData();
+
+//     // Append all form fields
+//     for (const key in data) {
+//       if (data[key]) {
+//         formData.append(key, data[key]);
+//       }
+//     }
+
+//     const response = await api.post('/auth/complete-registration', formData);
+
+//     return response.data;
+//   } catch (error) {
+//     throw error.response?.data || error;
+//   }
+// },
+
 
   // Get current user
   getCurrentUser: async () => {
     try {
-      const response = await api.get('/auth/me')
+      const response = await api.get('/auth/me');
       return response.data
     } catch (error) {
       throw error.response?.data || error
