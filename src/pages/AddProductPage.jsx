@@ -4,10 +4,14 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import AppHeader from '../components/dashboard/Header';
 import Sidebar from '../components/dashboard/sidebar';
 import AddProductWithImages from '../components/addProduct/addProduct';
+import { useSelector } from 'react-redux';
 
 const AddProductPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // screen < 600px
+  
+
+  console.log('User:', user);
 
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const drawerWidth = 280;

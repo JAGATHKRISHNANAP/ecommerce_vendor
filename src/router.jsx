@@ -184,6 +184,7 @@ import Dashboard from './pages/Dashboard'
 import AddProductPage from './pages/AddProductPage'
 import NameRegistration from './components/auth/NameRegistration'
 import ProfilePage from './pages/profile/ProfilePage'
+import VendorRegistrationPage from './components/verthee/verthey'
 
 // Simple 404 component
 const NotFound = () => {
@@ -312,6 +313,15 @@ const AppRouter = () => {
           <ProtectedRoute>
             <ProfilePage/>
           </ProtectedRoute>
+        } 
+      />
+
+            <Route 
+        path="/test" 
+        element={
+          // <ProtectedRoute>
+            <VendorRegistrationPage />
+          // </ProtectedRoute>
         } 
       />
       

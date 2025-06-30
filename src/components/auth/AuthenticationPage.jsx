@@ -1,7 +1,7 @@
 // vendor/src/components/auth/AuthenticationPage.jsx
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Shield, Phone, Mail } from 'lucide-react'
 import { setLoginMethod, clearError } from '../../redux/slices/authSlices'
 import PhoneLogin from './PhoneLogin'
@@ -49,7 +49,18 @@ const AuthenticationPage = () => {
     // Show name registration for new users
     if (showNameInput) {
       return <NameRegistration />
+
     }
+
+
+  // const renderAuthContent = () => {
+  //   if (showNameInput) {
+  //     return <Navigate to="/name-registration" />;
+  //   }
+
+    // return other content
+  
+
     
     // Phone authentication flow
     if (loginMethod === 'phone') {
