@@ -1586,222 +1586,6 @@
 
 
 
-// import React, { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { completeRegistration } from '../../redux/slices/authSlices';
-// import { validateEmail, validateIFSC } from '../../utils/validation';
-// import ErrorMessage from '../ui/ErrorMessage';
-// import LoadingSpinner from '../ui/LoadingSpinner';
-
-// const statesWithDistricts = {
-//   TamilNadu: ['Chennai', 'Coimbatore', 'Madurai', 'Salem'],
-//   Kerala: ['Kochi', 'Thiruvananthapuram', 'Kozhikode'],
-//   Karnataka: ['Bengaluru', 'Mysuru', 'Mangalore']
-// };
-
-// const NameRegistration = () => {
-//   const dispatch = useDispatch();
-//   const { isLoading, error, phoneNumber } = useSelector(state => state.auth);
-
-//   const [formData, setFormData] = useState({
-//     vendor_photo: null,
-//     full_name: '',
-//     phone_number: phoneNumber || '',
-//     email: '',
-//     aadhar_number: '',
-//     address_line1: '',
-//     address_line2: '',
-//     district: '',
-//     state: '',
-//     pincode: '',
-//     business_name: '',
-//     business_type: '',
-//     gst_number: '',
-//     business_address: '',
-//     account_holder_name: '',
-//     account_number: '',
-//     ifsc_code: ''
-//   });
-
-//   const [formErrors, setFormErrors] = useState({});
-
-//   const handleChange = (e) => {
-//     const { name, value, files } = e.target;
-//     setFormData(prev => ({
-//       ...prev,
-//       [name]: files ? files[0] : value
-//     }));
-//     setFormErrors(prev => ({ ...prev, [name]: '' }));
-//   };
-
-//   const validateForm = () => {
-//     const errors = {};
-//     const {
-//       full_name, email, aadhar_number, business_name, business_address,
-//       account_holder_name, account_number, ifsc_code,
-//       address_line1, district, state, pincode, gst_number
-//     } = formData;
-
-//     if (!full_name.trim()) errors.full_name = 'Full name is required';
-//     if (email && !validateEmail(email).isValid) errors.email = 'Invalid email format';
-//     if (!/^\d{12}$/.test(aadhar_number)) errors.aadhar_number = 'Aadhar number must be 12 digits';
-//     if (!business_name.trim()) errors.business_name = 'Business name is required';
-//     if (!business_address.trim()) errors.business_address = 'Business address is required';
-//     if (!account_holder_name.trim()) errors.account_holder_name = 'Account holder name is required';
-//     if (!account_number.trim()) errors.account_number = 'Account number is required';
-//     if (!validateIFSC(ifsc_code).isValid) errors.ifsc_code = 'Invalid IFSC code';
-
-//     // Address validation
-//     if (!address_line1.trim()) errors.address_line1 = 'Address line 1 is required';
-//     if (!district) errors.district = 'District is required';
-//     if (!state) errors.state = 'State is required';
-//     if (!/^\d{6}$/.test(pincode)) errors.pincode = 'Pincode must be 6 digits';
-
-//     if (gst_number && !/^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1})$/.test(gst_number)) {
-//       errors.gst_number = 'Invalid GST number';
-//     }
-
-//     setFormErrors(errors);
-//     return Object.keys(errors).length === 0;
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (!validateForm()) return;
-
-//     const payload = {
-//       ...formData,
-//       phoneNumber: formData.phone_number,
-//       name: formData.full_name.trim()
-//     };
-
-//     dispatch(completeRegistration(payload));
-//   };
-
-//   return (
-//     <div>
-//       <h2>Vendor Registration</h2>
-//       <form onSubmit={handleSubmit}>
-
-//         <fieldset>
-//           <legend>🧍 Personal Information</legend>
-//           <div>
-//             <label>Profile Photo</label>
-//             <input type="file" name="vendor_photo" accept="image/*" onChange={handleChange} />
-//           </div>
-//           <div>
-//             <input type="text" name="full_name" placeholder="Full Name" value={formData.full_name} onChange={handleChange} />
-//             {formErrors.full_name && <div>{formErrors.full_name}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} />
-//             {formErrors.phone_number && <div>{formErrors.phone_number}</div>}
-//           </div>
-//           <div>
-//             <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-//             {formErrors.email && <div>{formErrors.email}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="aadhar_number" placeholder="Aadhar Number" value={formData.aadhar_number} onChange={handleChange} />
-//             {formErrors.aadhar_number && <div>{formErrors.aadhar_number}</div>}
-//           </div>
-
-//           {/* Address Section */}
-//           <div>
-//             <input type="text" name="address_line1" placeholder="Address Line 1" value={formData.address_line1} onChange={handleChange} />
-//             {formErrors.address_line1 && <div>{formErrors.address_line1}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="address_line2" placeholder="Address Line 2 (optional)" value={formData.address_line2} onChange={handleChange} />
-//           </div>
-//           <div>
-//             <select name="state" value={formData.state} onChange={handleChange}>
-//               <option value="">Select State</option>
-//               {Object.keys(statesWithDistricts).map(state => (
-//                 <option key={state} value={state}>{state}</option>
-//               ))}
-//             </select>
-//             {formErrors.state && <div>{formErrors.state}</div>}
-//           </div>
-//           <div>
-//             <select name="district" value={formData.district} onChange={handleChange} disabled={!formData.state}>
-//               <option value="">Select District</option>
-//               {formData.state && statesWithDistricts[formData.state].map(dist => (
-//                 <option key={dist} value={dist}>{dist}</option>
-//               ))}
-//             </select>
-//             {formErrors.district && <div>{formErrors.district}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="pincode" placeholder="Pincode" value={formData.pincode} onChange={handleChange} />
-//             {formErrors.pincode && <div>{formErrors.pincode}</div>}
-//           </div>
-//         </fieldset>
-
-//         <fieldset>
-//           <legend>🏢 Business Details</legend>
-//           <div>
-//             <input type="text" name="business_name" placeholder="Business Name" value={formData.business_name} onChange={handleChange} />
-//             {formErrors.business_name && <div>{formErrors.business_name}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="business_type" placeholder="Business Type" value={formData.business_type} onChange={handleChange} />
-//           </div>
-//           <div>
-//             <input type="text" name="gst_number" placeholder="GST Number (optional)" value={formData.gst_number} onChange={handleChange} />
-//             {formErrors.gst_number && <div>{formErrors.gst_number}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="business_address" placeholder="Business Address" value={formData.business_address} onChange={handleChange} />
-//             {formErrors.business_address && <div>{formErrors.business_address}</div>}
-//           </div>
-//         </fieldset>
-
-//         <fieldset>
-//           <legend>🏦 Bank Details</legend>
-//           <div>
-//             <input type="text" name="account_holder_name" placeholder="Account Holder Name" value={formData.account_holder_name} onChange={handleChange} />
-//             {formErrors.account_holder_name && <div>{formErrors.account_holder_name}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="account_number" placeholder="Account Number" value={formData.account_number} onChange={handleChange} />
-//             {formErrors.account_number && <div>{formErrors.account_number}</div>}
-//           </div>
-//           <div>
-//             <input type="text" name="ifsc_code" placeholder="IFSC Code" value={formData.ifsc_code} onChange={handleChange} />
-//             {formErrors.ifsc_code && <div>{formErrors.ifsc_code}</div>}
-//           </div>
-//         </fieldset>
-
-//         {error && <ErrorMessage message={error} />}
-//         <button type="submit" disabled={isLoading}>
-//           {isLoading ? (
-//             <>
-//               <LoadingSpinner size="small" color="white" />
-//               <span>Submitting...</span>
-//             </>
-//           ) : (
-//             <span>Register Vendor</span>
-//           )}
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default NameRegistration;
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { completeRegistration } from '../../redux/slices/authSlices';
@@ -1815,32 +1599,9 @@ const statesWithDistricts = {
   Karnataka: ['Bengaluru', 'Mysuru', 'Mangalore']
 };
 
-const businessTypes = [
-  { value: 'sole_proprietorship', label: 'Sole Proprietorship' },
-  { value: 'partnership', label: 'Partnership' },
-  { value: 'private_limited', label: 'Private Limited Company' },
-  { value: 'public_limited', label: 'Public Limited Company' },
-  { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
-  { value: 'one_person_company', label: 'One Person Company (OPC)' },
-  { value: 'trust', label: 'Trust' },
-  { value: 'society', label: 'Society' },
-  { value: 'cooperative', label: 'Cooperative' },
-  { value: 'other', label: 'Other' }
-];
-
-const steps = [
-  { label: 'Personal Info', icon: '👤' },
-  { label: 'Address Details', icon: '📍' },
-  { label: 'Business Details', icon: '🏢' },
-  { label: 'Bank Details', icon: '🏦' },
-  { label: 'Review & Submit', icon: '✅' }
-];
-
 const NameRegistration = () => {
   const dispatch = useDispatch();
   const { isLoading, error, phoneNumber } = useSelector(state => state.auth);
-  const [activeStep, setActiveStep] = useState(0);
-  const [photoPreview, setPhotoPreview] = useState(null);
 
   const [formData, setFormData] = useState({
     vendor_photo: null,
@@ -1866,21 +1627,10 @@ const NameRegistration = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
-    if (files && files[0]) {
-      const file = files[0];
-      setFormData(prev => ({ ...prev, [name]: file }));
-      
-      // Create preview for photo
-      if (name === 'vendor_photo') {
-        const reader = new FileReader();
-        reader.onloadend = () => setPhotoPreview(reader.result);
-        reader.readAsDataURL(file);
-      }
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-    
+    setFormData(prev => ({
+      ...prev,
+      [name]: files ? files[0] : value
+    }));
     setFormErrors(prev => ({ ...prev, [name]: '' }));
   };
 
@@ -1915,52 +1665,6 @@ const NameRegistration = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const validateStep = (step) => {
-    const errors = {};
-    
-    switch (step) {
-      case 0: // Personal Information
-        if (!formData.full_name.trim()) errors.full_name = 'Full name is required';
-        if (formData.email && !validateEmail(formData.email).isValid) errors.email = 'Invalid email format';
-        if (!/^\d{12}$/.test(formData.aadhar_number)) errors.aadhar_number = 'Aadhar number must be 12 digits';
-        break;
-        
-      case 1: // Address Details
-        if (!formData.address_line1.trim()) errors.address_line1 = 'Address line 1 is required';
-        if (!formData.district) errors.district = 'District is required';
-        if (!formData.state) errors.state = 'State is required';
-        if (!/^\d{6}$/.test(formData.pincode)) errors.pincode = 'Pincode must be 6 digits';
-        break;
-        
-      case 2: // Business Details
-        if (!formData.business_name.trim()) errors.business_name = 'Business name is required';
-        if (!formData.business_address.trim()) errors.business_address = 'Business address is required';
-        if (formData.gst_number && !/^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1})$/.test(formData.gst_number)) {
-          errors.gst_number = 'Invalid GST number';
-        }
-        break;
-        
-      case 3: // Bank Details
-        if (!formData.account_holder_name.trim()) errors.account_holder_name = 'Account holder name is required';
-        if (!formData.account_number.trim()) errors.account_number = 'Account number is required';
-        if (!validateIFSC(formData.ifsc_code).isValid) errors.ifsc_code = 'Invalid IFSC code';
-        break;
-    }
-    
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleNext = () => {
-    if (validateStep(activeStep)) {
-      setActiveStep(prev => prev + 1);
-    }
-  };
-
-  const handleBack = () => {
-    setActiveStep(prev => prev - 1);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -1974,1094 +1678,1390 @@ const NameRegistration = () => {
     dispatch(completeRegistration(payload));
   };
 
-  const renderPersonalInfo = () => (
-    <div className="step-content">
-      <div className="personal-info-layout">
-        <div className="photo-section">
-          <div className="photo-upload">
-            <input
-              type="file"
-              name="vendor_photo"
-              accept="image/*"
-              onChange={handleChange}
-              id="photo-upload"
-              className="photo-input"
-            />
-            <label htmlFor="photo-upload" className="photo-label">
-              <div className="photo-circle">
-                {photoPreview ? (
-                  <img src={photoPreview} alt="Preview" className="preview-image" />
-                ) : (
-                  <div className="camera-icon">📷</div>
-                )}
-              </div>
-            </label>
-            <p className="photo-text">Click to upload photo (Max 5MB)</p>
-          </div>
-        </div>
-
-        <div className="form-section">
-          <div className="form-row">
-            <div className="form-field">
-              <label className="field-label">Full Name</label>
-              <div className="input-with-icon">
-                <span className="input-icon">👤</span>
-                <input
-                  type="text"
-                  name="full_name"
-                  placeholder=""
-                  value={formData.full_name}
-                  onChange={handleChange}
-                  className={`form-input-inline ${formErrors.full_name ? 'error' : ''}`}
-                />
-              </div>
-              {formErrors.full_name && <div className="error-message">{formErrors.full_name}</div>}
-            </div>
-
-            <div className="form-field">
-              <label className="field-label">Email Address</label>
-              <div className="input-with-icon">
-                <span className="input-icon">📧</span>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder=""
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`form-input-inline ${formErrors.email ? 'error' : ''}`}
-                />
-              </div>
-              {formErrors.email && <div className="error-message">{formErrors.email}</div>}
-            </div>
-
-            <div className="form-field">
-              <label className="field-label">Aadhar Number</label>
-              <div className="input-with-icon">
-                <span className="input-icon">🆔</span>
-                <input
-                  type="text"
-                  name="aadhar_number"
-                  placeholder=""
-                  value={formData.aadhar_number}
-                  onChange={handleChange}
-                  className={`form-input-inline ${formErrors.aadhar_number ? 'error' : ''}`}
-                  maxLength="12"
-                />
-              </div>
-              {formErrors.aadhar_number && <div className="error-message">{formErrors.aadhar_number}</div>}
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-field phone-field">
-              <label className="field-label">Phone Number</label>
-              <div className="input-with-icon">
-                <span className="input-icon">📞</span>
-                <input
-                  type="text"
-                  name="phone_number"
-                  placeholder=""
-                  value={formData.phone_number}
-                  onChange={handleChange}
-                  className={`form-input-inline ${formErrors.phone_number ? 'error' : ''}`}
-                />
-              </div>
-              {formErrors.phone_number && <div className="error-message">{formErrors.phone_number}</div>}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderAddressDetails = () => (
-    <div className="step-content">
-      <div className="form-grid">
-        <div className="input-group full-width">
-          <label className="input-label">Address Line 1 *</label>
-          <input
-            type="text"
-            name="address_line1"
-            placeholder="Enter address line 1"
-            value={formData.address_line1}
-            onChange={handleChange}
-            className={`form-input ${formErrors.address_line1 ? 'error' : ''}`}
-          />
-          {formErrors.address_line1 && <div className="error-message">{formErrors.address_line1}</div>}
-        </div>
-
-        <div className="input-group full-width">
-          <label className="input-label">Address Line 2</label>
-          <input
-            type="text"
-            name="address_line2"
-            placeholder="Enter address line 2 (optional)"
-            value={formData.address_line2}
-            onChange={handleChange}
-            className="form-input"
-          />
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">State *</label>
-          <select
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            className={`form-select ${formErrors.state ? 'error' : ''}`}
-          >
-            <option value="">Select State</option>
-            {Object.keys(statesWithDistricts).map(state => (
-              <option key={state} value={state}>{state}</option>
-            ))}
-          </select>
-          {formErrors.state && <div className="error-message">{formErrors.state}</div>}
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">District *</label>
-          <select
-            name="district"
-            value={formData.district}
-            onChange={handleChange}
-            disabled={!formData.state}
-            className={`form-select ${formErrors.district ? 'error' : ''}`}
-          >
-            <option value="">Select District</option>
-            {formData.state && statesWithDistricts[formData.state].map(dist => (
-              <option key={dist} value={dist}>{dist}</option>
-            ))}
-          </select>
-          {formErrors.district && <div className="error-message">{formErrors.district}</div>}
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">Pincode *</label>
-          <input
-            type="text"
-            name="pincode"
-            placeholder="Enter 6-digit pincode"
-            value={formData.pincode}
-            onChange={handleChange}
-            className={`form-input ${formErrors.pincode ? 'error' : ''}`}
-            maxLength="6"
-          />
-          {formErrors.pincode && <div className="error-message">{formErrors.pincode}</div>}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderBusinessDetails = () => (
-    <div className="step-content">
-      <div className="form-grid">
-        <div className="input-group">
-          <label className="input-label">Business Name *</label>
-          <input
-            type="text"
-            name="business_name"
-            placeholder="Enter business name"
-            value={formData.business_name}
-            onChange={handleChange}
-            className={`form-input ${formErrors.business_name ? 'error' : ''}`}
-          />
-          {formErrors.business_name && <div className="error-message">{formErrors.business_name}</div>}
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">Business Type</label>
-          <select
-            name="business_type"
-            value={formData.business_type}
-            onChange={handleChange}
-            className="form-select"
-          >
-            <option value="">Select Business Type</option>
-            {businessTypes.map(type => (
-              <option key={type.value} value={type.value}>{type.label}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">GST Number</label>
-          <input
-            type="text"
-            name="gst_number"
-            placeholder="Enter GST number (optional)"
-            value={formData.gst_number}
-            onChange={handleChange}
-            className={`form-input ${formErrors.gst_number ? 'error' : ''}`}
-          />
-          {formErrors.gst_number && <div className="error-message">{formErrors.gst_number}</div>}
-          <small className="input-hint">Format: 22AAAAA0000A1Z5</small>
-        </div>
-
-        <div className="input-group full-width">
-          <label className="input-label">Business Address *</label>
-          <textarea
-            name="business_address"
-            placeholder="Enter complete business address"
-            value={formData.business_address}
-            onChange={handleChange}
-            className={`form-textarea ${formErrors.business_address ? 'error' : ''}`}
-            rows="3"
-          />
-          {formErrors.business_address && <div className="error-message">{formErrors.business_address}</div>}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderBankDetails = () => (
-    <div className="step-content">
-      <div className="form-grid">
-        <div className="input-group">
-          <label className="input-label">Account Holder Name *</label>
-          <input
-            type="text"
-            name="account_holder_name"
-            placeholder="Enter account holder name"
-            value={formData.account_holder_name}
-            onChange={handleChange}
-            className={`form-input ${formErrors.account_holder_name ? 'error' : ''}`}
-          />
-          {formErrors.account_holder_name && <div className="error-message">{formErrors.account_holder_name}</div>}
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">Account Number *</label>
-          <input
-            type="text"
-            name="account_number"
-            placeholder="Enter account number"
-            value={formData.account_number}
-            onChange={handleChange}
-            className={`form-input ${formErrors.account_number ? 'error' : ''}`}
-          />
-          {formErrors.account_number && <div className="error-message">{formErrors.account_number}</div>}
-        </div>
-
-        <div className="input-group">
-          <label className="input-label">IFSC Code *</label>
-          <input
-            type="text"
-            name="ifsc_code"
-            placeholder="Enter IFSC code"
-            value={formData.ifsc_code}
-            onChange={handleChange}
-            className={`form-input ${formErrors.ifsc_code ? 'error' : ''}`}
-          />
-          {formErrors.ifsc_code && <div className="error-message">{formErrors.ifsc_code}</div>}
-          <small className="input-hint">Format: ABCD0123456</small>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderReviewSubmit = () => (
-    <div className="step-content">
-      <div className="review-section">
-        <h3 className="section-title">📋 Review Your Information</h3>
-        
-        <div className="review-cards">
-          <div className="review-card">
-            <h4>👤 Personal Information</h4>
-            <div className="review-item"><strong>Name:</strong> {formData.full_name}</div>
-            <div className="review-item"><strong>Phone:</strong> {formData.phone_number}</div>
-            {formData.email && <div className="review-item"><strong>Email:</strong> {formData.email}</div>}
-            <div className="review-item"><strong>Aadhar:</strong> {formData.aadhar_number}</div>
-            <div className="review-item">
-              <strong>Address:</strong> {formData.address_line1}
-              {formData.address_line2 && `, ${formData.address_line2}`}, {formData.district}, {formData.state} - {formData.pincode}
-            </div>
-          </div>
-
-          <div className="review-card">
-            <h4>🏢 Business Details</h4>
-            <div className="review-item"><strong>Business Name:</strong> {formData.business_name}</div>
-            {formData.business_type && <div className="review-item"><strong>Type:</strong> {businessTypes.find(t => t.value === formData.business_type)?.label}</div>}
-            {formData.gst_number && <div className="review-item"><strong>GST:</strong> {formData.gst_number}</div>}
-            <div className="review-item"><strong>Address:</strong> {formData.business_address}</div>
-          </div>
-
-          <div className="review-card">
-            <h4>🏦 Bank Details</h4>
-            <div className="review-item"><strong>Account Holder:</strong> {formData.account_holder_name}</div>
-            <div className="review-item"><strong>Account Number:</strong> {formData.account_number}</div>
-            <div className="review-item"><strong>IFSC Code:</strong> {formData.ifsc_code}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="vendor-registration">
-      <style jsx>{`
-        .vendor-registration {
-          min-height: 100vh;
-          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-          padding: 2rem 1rem;
-        }
-
-        .registration-container {
-          max-width: 1000px;
-          margin: 0 auto;
-        }
-
-        .header {
-          text-align: center;
-          background: linear-gradient(135deg, #4a5568 0%, #718096 100%);
-          color: white;
-          padding: 3rem 2rem;
-          border-radius: 0.75rem;
-          margin-bottom: 2rem;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .header-icon {
-          font-size: 3rem;
-          margin-bottom: 1rem;
-        }
-
-        .header h1 {
-          font-size: 2rem;
-          font-weight: 700;
-          margin-bottom: 0.5rem;
-        }
-
-        .header p {
-          font-size: 1rem;
-          opacity: 0.9;
-          max-width: 600px;
-          margin: 0 auto;
-          line-height: 1.5;
-        }
-
-        .stepper {
-          background: white;
-          border-radius: 1rem;
-          padding: 2rem;
-          margin-bottom: 2rem;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-          border: 1px solid #e5e7eb;
-        }
-
-        .stepper-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 2rem;
-          padding: 1rem 0;
-        }
-
-        .stepper-container::before {
-          display: none;
-        }
-
-        .step {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          position: relative;
-          z-index: 2;
-          background: white;
-          padding: 0;
-        }
-
-        .step-icon {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.2rem;
-          margin-bottom: 0.5rem;
-          background: #f3f4f6;
-          color: #9ca3af;
-          transition: all 0.3s ease;
-        }
-
-        .step-icon.active {
-          background: #232f3e;
-          color: white;
-        }
-
-        .step-icon.completed {
-          background: #16a34a;
-          color: white;
-        }
-
-        .step-label {
-          font-size: 0.85rem;
-          font-weight: 500;
-          color: #9ca3af;
-          text-align: center;
-        }
-
-        .step-label.active {
-          color: #232f3e;
-          font-weight: 600;
-        }
-
-        .personal-info-layout {
-          display: flex;
-          gap: 3rem;
-          align-items: flex-start;
-        }
-
-        .photo-section {
-          flex-shrink: 0;
-        }
-
-        .form-section {
-          flex: 1;
-        }
-
-        .photo-circle {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          background: #f3f4f6;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 2px dashed #d1d5db;
-          margin-bottom: 1rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          overflow: hidden;
-        }
-
-        .photo-circle:hover {
-          border-color: #232f3e;
-          background: #f8fafc;
-        }
-
-        .camera-icon {
-          font-size: 2rem;
-          color: #9ca3af;
-        }
-
-        .photo-text {
-          text-align: center;
-          font-size: 0.85rem;
-          color: #6b7280;
-          margin: 0;
-          max-width: 120px;
-        }
-
-        .form-row {
-          display: flex;
-          gap: 2rem;
-          margin-bottom: 2rem;
-        }
-
-        .form-field {
-          flex: 1;
-        }
-
-        .phone-field {
-          flex: 0.6;
-        }
-
-        .field-label {
-          display: block;
-          font-size: 0.9rem;
-          font-weight: 500;
-          color: #374151;
-          margin-bottom: 0.5rem;
-        }
-
-        .input-with-icon {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .input-icon {
-          position: absolute;
-          left: 1rem;
-          font-size: 1.1rem;
-          color: #9ca3af;
-          z-index: 1;
-        }
-
-        .form-input-inline {
-          width: 100%;
-          padding: 0.875rem 1rem 0.875rem 3rem;
-          border: 1px solid #d1d5db;
-          border-radius: 0.375rem;
-          font-size: 0.95rem;
-          transition: all 0.3s ease;
-          background: white;
-        }
-
-        .form-input-inline:focus {
-          outline: none;
-          border-color: #232f3e;
-          box-shadow: 0 0 0 3px rgba(35, 47, 62, 0.1);
-        }
-
-        .form-input-inline.error {
-          border-color: #ef4444;
-        }
-
-        .form-container {
-          background: white;
-          border-radius: 1rem;
-          padding: 2rem;
-          margin-bottom: 2rem;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-          border: 1px solid #e5e7eb;
-        }
-
-        .step-content {
-          min-height: 400px;
-        }
-
-        .step-title {
-          font-size: 1.5rem;
-          font-weight: 700;
-          margin-bottom: 0.5rem;
-          color: #111827;
-        }
-
-        .step-description {
-          color: #6b7280;
-          margin-bottom: 2rem;
-        }
-
-        .form-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        .form-grid.two-column {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .photo-upload-section {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          grid-column: 1 / -1;
-        }
-
-        .photo-upload {
-          text-align: center;
-        }
-
-        .photo-input {
-          display: none;
-        }
-
-        .photo-label {
-          cursor: pointer;
-          display: block;
-        }
-
-        .photo-preview {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          border: 3px dashed #d1d5db;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 1rem;
-          transition: all 0.3s ease;
-          overflow: hidden;
-        }
-
-        .photo-preview:hover {
-          border-color: #232f3e;
-          background: #f9fafb;
-        }
-
-        .preview-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-
-        .photo-placeholder {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          color: #6b7280;
-          font-size: 2rem;
-        }
-
-        .photo-placeholder span {
-          font-size: 0.9rem;
-          margin-top: 0.5rem;
-        }
-
-        .photo-hint {
-          color: #6b7280;
-          font-size: 0.9rem;
-          margin: 0;
-        }
-
-        .input-group {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .input-group.full-width {
-          grid-column: 1 / -1;
-        }
-
-        .input-label {
-          font-weight: 600;
-          color: #374151;
-          margin-bottom: 0.5rem;
-          font-size: 0.9rem;
-        }
-
-        .form-input, .form-select, .form-textarea {
-          padding: 0.75rem 1rem;
-          border: 1px solid #d1d5db;
-          border-radius: 0.5rem;
-          font-size: 1rem;
-          transition: all 0.3s ease;
-          background: white;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-          outline: none;
-          border-color: #232f3e;
-          box-shadow: 0 0 0 3px rgba(35, 47, 62, 0.1);
-        }
-
-        .form-input.error, .form-select.error, .form-textarea.error {
-          border-color: #ef4444;
-        }
-
-        .form-select:disabled {
-          background: #f9fafb;
-          color: #9ca3af;
-          cursor: not-allowed;
-        }
-
-        .error-message {
-          color: #ef4444;
-          font-size: 0.85rem;
-          margin-top: 0.25rem;
-        }
-
-        .input-hint {
-          color: #6b7280;
-          font-size: 0.8rem;
-          margin-top: 0.25rem;
-        }
-
-        .section-title {
-          font-size: 1.2rem;
-          font-weight: 700;
-          color: #111827;
-          margin-bottom: 1.5rem;
-          padding-bottom: 0.5rem;
-          border-bottom: 2px solid #e5e7eb;
-        }
-
-        .address-section {
-          margin-top: 2rem;
-          padding-top: 2rem;
-          border-top: 1px solid #e5e7eb;
-        }
-
-        .review-section {
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        .review-cards {
-          display: grid;
-          gap: 1.5rem;
-          margin-top: 2rem;
-        }
-
-        .review-card {
-          background: #f8fafc;
-          border: 1px solid #e5e7eb;
-          border-radius: 0.75rem;
-          padding: 1.5rem;
-        }
-
-        .review-card h4 {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: #111827;
-          margin-bottom: 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .review-item {
-          margin-bottom: 0.75rem;
-          color: #374151;
-        }
-
-        .review-item strong {
-          color: #111827;
-        }
-
-        .navigation {
-          background: white;
-          border-radius: 1rem;
-          padding: 1.5rem 2rem;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-          border: 1px solid #e5e7eb;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .btn {
-          padding: 0.75rem 2rem;
-          border-radius: 0.5rem;
-          font-weight: 600;
-          font-size: 1rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: none;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .btn-secondary {
-          background: white;
-          color: #6b7280;
-          border: 1px solid #d1d5db;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-          background: #f9fafb;
-          border-color: #9ca3af;
-        }
-
-        .btn-secondary:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .btn-primary {
-          background: #232f3e;
-          color: white;
-          border: 1px solid #232f3e;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-          background: #1e3a8a;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(35, 47, 62, 0.25);
-        }
-
-        .btn-primary:disabled {
-          background: #9ca3af;
-          cursor: not-allowed;
-          transform: none;
-        }
-
-        .btn-success {
-          background: #16a34a;
-          color: white;
-          border: 1px solid #16a34a;
-          padding: 1rem 3rem;
-          font-size: 1.1rem;
-        }
-
-        .btn-success:hover:not(:disabled) {
-          background: #15803d;
-          transform: translateY(-1px);
-          box-shadow: 0 6px 20px rgba(22, 163, 74, 0.35);
-        }
-
-        .help-section {
-          background: white;
-          border-radius: 1rem;
-          padding: 1.5rem 2rem;
-          margin-top: 2rem;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-          border: 1px solid #e5e7eb;
-          text-align: center;
-        }
-
-        .help-title {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: #111827;
-          margin-bottom: 1rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-        }
-
-        .help-description {
-          color: #6b7280;
-          margin-bottom: 1.5rem;
-        }
-
-        .contact-info {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-        }
-
-        .contact-chip {
-          background: #f3f4f6;
-          border: 1px solid #d1d5db;
-          border-radius: 2rem;
-          padding: 0.5rem 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          font-size: 0.9rem;
-          color: #374151;
-        }
-
-        .error-alert {
-          background: #fef2f2;
-          border: 1px solid #fecaca;
-          color: #dc2626;
-          padding: 1rem;
-          border-radius: 0.5rem;
-          margin: 1rem 0;
-        }
-
-        @media (max-width: 768px) {
-          .vendor-registration {
-            padding: 1rem 0.5rem;
-          }
-
-          .header {
-            padding: 2rem 1rem;
-          }
-
-          .header h1 {
-            font-size: 1.75rem;
-          }
-
-          .stepper {
-            padding: 1rem;
-          }
-
-          .stepper-container {
-            flex-wrap: wrap;
-            gap: 1rem;
-          }
-
-          .step {
-            flex-direction: row;
-            background: #f8fafc;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid #e5e7eb;
-          }
-
-          .step-icon {
-            width: 35px;
-            height: 35px;
-            margin-right: 0.75rem;
-            margin-bottom: 0;
-          }
-
-          .step-label {
-            text-align: left;
-            font-size: 0.8rem;
-          }
-
-          .form-container {
-            padding: 1.5rem;
-          }
-
-          .personal-info-layout {
-            flex-direction: column;
-            gap: 2rem;
-            align-items: center;
-          }
-
-          .form-row {
-            flex-direction: column;
-            gap: 1.5rem;
-          }
-
-          .navigation {
-            padding: 1rem;
-            flex-direction: column;
-            gap: 1rem;
-          }
-
-          .btn {
-            width: 100%;
-            justify-content: center;
-          }
-
-          .contact-info {
-            flex-direction: column;
-            align-items: center;
-          }
-        }
-      `}</style>
-
-      <div className="registration-container">
-        {/* Header */}
-        <div className="header">
-          <div className="header-icon">🏪</div>
-          <h1>Become a Vendor</h1>
-          <p>
-            Join our marketplace and reach thousands of customers. 
-            Complete the registration process to start selling your products.
-          </p>
-        </div>
-
-        {/* Progress Stepper */}
-        <div className="stepper">
-          <div className="stepper-container">
-            {steps.map((step, index) => (
-              <div key={index} className="step">
-                <div className={`step-icon ${index <= activeStep ? 'active' : ''} ${index < activeStep ? 'completed' : ''}`}>
-                  {index < activeStep ? '✓' : step.icon}
-                </div>
-                <div className={`step-label ${index <= activeStep ? 'active' : ''}`}>
-                  {step.label}
-                </div>
-              </div>
-            ))}
+    <div>
+      <h2>Vendor Registration</h2>
+      <form onSubmit={handleSubmit}>
+
+        <fieldset>
+          <legend>🧍 Personal Information</legend>
+          <div>
+            <label>Profile Photo</label>
+            <input type="file" name="vendor_photo" accept="image/*" onChange={handleChange} />
           </div>
-        </div>
+          <div>
+            <input type="text" name="full_name" placeholder="Full Name" value={formData.full_name} onChange={handleChange} />
+            {formErrors.full_name && <div>{formErrors.full_name}</div>}
+          </div>
+          <div>
+            <input type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} />
+            {formErrors.phone_number && <div>{formErrors.phone_number}</div>}
+          </div>
+          <div>
+            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+            {formErrors.email && <div>{formErrors.email}</div>}
+          </div>
+          <div>
+            <input type="text" name="aadhar_number" placeholder="Aadhar Number" value={formData.aadhar_number} onChange={handleChange} />
+            {formErrors.aadhar_number && <div>{formErrors.aadhar_number}</div>}
+          </div>
 
-        {/* Form Content */}
-        <div className="form-container">
-          {activeStep === 0 && (
-            <div>
-              <h2 className="step-title">Personal Information</h2>
-              <p className="step-description">
-                Please provide your personal details as they appear on your government ID.
-              </p>
-              {renderPersonalInfo()}
-            </div>
-          )}
+          {/* Address Section */}
+          <div>
+            <input type="text" name="address_line1" placeholder="Address Line 1" value={formData.address_line1} onChange={handleChange} />
+            {formErrors.address_line1 && <div>{formErrors.address_line1}</div>}
+          </div>
+          <div>
+            <input type="text" name="address_line2" placeholder="Address Line 2 (optional)" value={formData.address_line2} onChange={handleChange} />
+          </div>
+          <div>
+            <select name="state" value={formData.state} onChange={handleChange}>
+              <option value="">Select State</option>
+              {Object.keys(statesWithDistricts).map(state => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+            {formErrors.state && <div>{formErrors.state}</div>}
+          </div>
+          <div>
+            <select name="district" value={formData.district} onChange={handleChange} disabled={!formData.state}>
+              <option value="">Select District</option>
+              {formData.state && statesWithDistricts[formData.state].map(dist => (
+                <option key={dist} value={dist}>{dist}</option>
+              ))}
+            </select>
+            {formErrors.district && <div>{formErrors.district}</div>}
+          </div>
+          <div>
+            <input type="text" name="pincode" placeholder="Pincode" value={formData.pincode} onChange={handleChange} />
+            {formErrors.pincode && <div>{formErrors.pincode}</div>}
+          </div>
+        </fieldset>
 
-          {activeStep === 1 && (
-            <div>
-              <h2 className="step-title">Address Details</h2>
-              <p className="step-description">
-                Provide your complete residential address for communication and verification purposes.
-              </p>
-              {renderAddressDetails()}
-            </div>
-          )}
+        <fieldset>
+          <legend>🏢 Business Details</legend>
+          <div>
+            <input type="text" name="business_name" placeholder="Business Name" value={formData.business_name} onChange={handleChange} />
+            {formErrors.business_name && <div>{formErrors.business_name}</div>}
+          </div>
+          <div>
+            <input type="text" name="business_type" placeholder="Business Type" value={formData.business_type} onChange={handleChange} />
+          </div>
+          <div>
+            <input type="text" name="gst_number" placeholder="GST Number (optional)" value={formData.gst_number} onChange={handleChange} />
+            {formErrors.gst_number && <div>{formErrors.gst_number}</div>}
+          </div>
+          <div>
+            <input type="text" name="business_address" placeholder="Business Address" value={formData.business_address} onChange={handleChange} />
+            {formErrors.business_address && <div>{formErrors.business_address}</div>}
+          </div>
+        </fieldset>
 
-          {activeStep === 2 && (
-            <div>
-              <h2 className="step-title">Business Details</h2>
-              <p className="step-description">
-                Tell us about your business and what you plan to sell on our platform.
-              </p>
-              {renderBusinessDetails()}
-            </div>
-          )}
+        <fieldset>
+          <legend>🏦 Bank Details</legend>
+          <div>
+            <input type="text" name="account_holder_name" placeholder="Account Holder Name" value={formData.account_holder_name} onChange={handleChange} />
+            {formErrors.account_holder_name && <div>{formErrors.account_holder_name}</div>}
+          </div>
+          <div>
+            <input type="text" name="account_number" placeholder="Account Number" value={formData.account_number} onChange={handleChange} />
+            {formErrors.account_number && <div>{formErrors.account_number}</div>}
+          </div>
+          <div>
+            <input type="text" name="ifsc_code" placeholder="IFSC Code" value={formData.ifsc_code} onChange={handleChange} />
+            {formErrors.ifsc_code && <div>{formErrors.ifsc_code}</div>}
+          </div>
+        </fieldset>
 
-          {activeStep === 3 && (
-            <div>
-              <h2 className="step-title">Bank Account Details</h2>
-              <p className="step-description">
-                Provide your bank account details for payment processing.
-              </p>
-              {renderBankDetails()}
-            </div>
-          )}
-
-          {activeStep === 4 && (
-            <div>
-              <h2 className="step-title">Review & Submit</h2>
-              <p className="step-description">
-                Please review all information before submitting your vendor registration application.
-              </p>
-              {renderReviewSubmit()}
-            </div>
-          )}
-
-          {error && (
-            <div className="error-alert">
-              <ErrorMessage message={error} />
-            </div>
-          )}
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="navigation">
-          <button
-            type="button"
-            onClick={handleBack}
-            disabled={activeStep === 0}
-            className="btn btn-secondary"
-          >
-            ← Back
-          </button>
-
-          {activeStep < steps.length - 1 ? (
-            <button
-              type="button"
-              onClick={handleNext}
-              className="btn btn-primary"
-            >
-              Continue →
-            </button>
+        {error && <ErrorMessage message={error} />}
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <LoadingSpinner size="small" color="white" />
+              <span>Submitting...</span>
+            </>
           ) : (
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isLoading}
-              className="btn btn-success"
-            >
-              {isLoading ? (
-                <>
-                  <LoadingSpinner size="small" color="white" />
-                  Submitting...
-                </>
-              ) : (
-                <>
-                  ✓ Submit Application
-                </>
-              )}
-            </button>
+            <span>Register Vendor</span>
           )}
-        </div>
-
-        {/* Help Section */}
-        <div className="help-section">
-          <h3 className="help-title">
-            ℹ️ Need Help?
-          </h3>
-          <p className="help-description">
-            If you have any questions about the registration process or need assistance, 
-            please contact our vendor support team.
-          </p>
-          <div className="contact-info">
-            <div className="contact-chip">
-              📧 vendor-support@example.com
-            </div>
-            <div className="contact-chip">
-              📞 +1 (555) 123-4567
-            </div>
-          </div>
-        </div>
-      </div>
+        </button>
+      </form>
     </div>
   );
 };
 
 export default NameRegistration;
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { completeRegistration } from '../../redux/slices/authSlices';
+// import { validateEmail, validateIFSC } from '../../utils/validation';
+// import ErrorMessage from '../ui/ErrorMessage';
+// import LoadingSpinner from '../ui/LoadingSpinner';
+
+// const statesWithDistricts = {
+//   TamilNadu: ['Chennai', 'Coimbatore', 'Madurai', 'Salem'],
+//   Kerala: ['Kochi', 'Thiruvananthapuram', 'Kozhikode'],
+//   Karnataka: ['Bengaluru', 'Mysuru', 'Mangalore']
+// };
+
+// const businessTypes = [
+//   { value: 'sole_proprietorship', label: 'Sole Proprietorship' },
+//   { value: 'partnership', label: 'Partnership' },
+//   { value: 'private_limited', label: 'Private Limited Company' },
+//   { value: 'public_limited', label: 'Public Limited Company' },
+//   { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
+//   { value: 'one_person_company', label: 'One Person Company (OPC)' },
+//   { value: 'trust', label: 'Trust' },
+//   { value: 'society', label: 'Society' },
+//   { value: 'cooperative', label: 'Cooperative' },
+//   { value: 'other', label: 'Other' }
+// ];
+
+// const steps = [
+//   { label: 'Personal Info', icon: '👤' },
+//   { label: 'Address Details', icon: '📍' },
+//   { label: 'Business Details', icon: '🏢' },
+//   { label: 'Bank Details', icon: '🏦' },
+//   { label: 'Review & Submit', icon: '✅' }
+// ];
+
+// const NameRegistration = () => {
+//   const dispatch = useDispatch();
+//   const { isLoading, error, phoneNumber } = useSelector(state => state.auth);
+//   const [activeStep, setActiveStep] = useState(0);
+//   const [photoPreview, setPhotoPreview] = useState(null);
+
+//   const [formData, setFormData] = useState({
+//     vendor_photo: null,
+//     full_name: '',
+//     phone_number: phoneNumber || '',
+//     email: '',
+//     aadhar_number: '',
+//     address_line1: '',
+//     address_line2: '',
+//     district: '',
+//     state: '',
+//     pincode: '',
+//     business_name: '',
+//     business_type: '',
+//     gst_number: '',
+//     business_address: '',
+//     account_holder_name: '',
+//     account_number: '',
+//     ifsc_code: ''
+//   });
+
+//   const [formErrors, setFormErrors] = useState({});
+
+//   const handleChange = (e) => {
+//     const { name, value, files } = e.target;
+    
+//     if (files && files[0]) {
+//       const file = files[0];
+//       setFormData(prev => ({ ...prev, [name]: file }));
+      
+//       // Create preview for photo
+//       if (name === 'vendor_photo') {
+//         const reader = new FileReader();
+//         reader.onloadend = () => setPhotoPreview(reader.result);
+//         reader.readAsDataURL(file);
+//       }
+//     } else {
+//       setFormData(prev => ({ ...prev, [name]: value }));
+//     }
+    
+//     setFormErrors(prev => ({ ...prev, [name]: '' }));
+//   };
+
+//   const validateForm = () => {
+//     const errors = {};
+//     const {
+//       full_name, email, aadhar_number, business_name, business_address,
+//       account_holder_name, account_number, ifsc_code,
+//       address_line1, district, state, pincode, gst_number
+//     } = formData;
+
+//     if (!full_name.trim()) errors.full_name = 'Full name is required';
+//     if (email && !validateEmail(email).isValid) errors.email = 'Invalid email format';
+//     if (!/^\d{12}$/.test(aadhar_number)) errors.aadhar_number = 'Aadhar number must be 12 digits';
+//     if (!business_name.trim()) errors.business_name = 'Business name is required';
+//     if (!business_address.trim()) errors.business_address = 'Business address is required';
+//     if (!account_holder_name.trim()) errors.account_holder_name = 'Account holder name is required';
+//     if (!account_number.trim()) errors.account_number = 'Account number is required';
+//     if (!validateIFSC(ifsc_code).isValid) errors.ifsc_code = 'Invalid IFSC code';
+
+//     // Address validation
+//     if (!address_line1.trim()) errors.address_line1 = 'Address line 1 is required';
+//     if (!district) errors.district = 'District is required';
+//     if (!state) errors.state = 'State is required';
+//     if (!/^\d{6}$/.test(pincode)) errors.pincode = 'Pincode must be 6 digits';
+
+//     if (gst_number && !/^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1})$/.test(gst_number)) {
+//       errors.gst_number = 'Invalid GST number';
+//     }
+
+//     setFormErrors(errors);
+//     return Object.keys(errors).length === 0;
+//   };
+
+//   const validateStep = (step) => {
+//     const errors = {};
+    
+//     switch (step) {
+//       case 0: // Personal Information
+//         if (!formData.full_name.trim()) errors.full_name = 'Full name is required';
+//         if (formData.email && !validateEmail(formData.email).isValid) errors.email = 'Invalid email format';
+//         if (!/^\d{12}$/.test(formData.aadhar_number)) errors.aadhar_number = 'Aadhar number must be 12 digits';
+//         break;
+        
+//       case 1: // Address Details
+//         if (!formData.address_line1.trim()) errors.address_line1 = 'Address line 1 is required';
+//         if (!formData.district) errors.district = 'District is required';
+//         if (!formData.state) errors.state = 'State is required';
+//         if (!/^\d{6}$/.test(formData.pincode)) errors.pincode = 'Pincode must be 6 digits';
+//         break;
+        
+//       case 2: // Business Details
+//         if (!formData.business_name.trim()) errors.business_name = 'Business name is required';
+//         if (!formData.business_address.trim()) errors.business_address = 'Business address is required';
+//         if (formData.gst_number && !/^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1})$/.test(formData.gst_number)) {
+//           errors.gst_number = 'Invalid GST number';
+//         }
+//         break;
+        
+//       case 3: // Bank Details
+//         if (!formData.account_holder_name.trim()) errors.account_holder_name = 'Account holder name is required';
+//         if (!formData.account_number.trim()) errors.account_number = 'Account number is required';
+//         if (!validateIFSC(formData.ifsc_code).isValid) errors.ifsc_code = 'Invalid IFSC code';
+//         break;
+//     }
+    
+//     setFormErrors(errors);
+//     return Object.keys(errors).length === 0;
+//   };
+
+//   const handleNext = () => {
+//     if (validateStep(activeStep)) {
+//       setActiveStep(prev => prev + 1);
+//     }
+//   };
+
+//   const handleBack = () => {
+//     setActiveStep(prev => prev - 1);
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     if (!validateForm()) return;
+
+//     const payload = {
+//       ...formData,
+//       phoneNumber: formData.phone_number,
+//       name: formData.full_name.trim()
+//     };
+
+//     dispatch(completeRegistration(payload));
+//   };
+
+//   const renderPersonalInfo = () => (
+//     <div className="step-content">
+//       <div className="personal-info-layout">
+//         <div className="photo-section">
+//           <div className="photo-upload">
+//             <input
+//               type="file"
+//               name="vendor_photo"
+//               accept="image/*"
+//               onChange={handleChange}
+//               id="photo-upload"
+//               className="photo-input"
+//             />
+//             <label htmlFor="photo-upload" className="photo-label">
+//               <div className="photo-circle">
+//                 {photoPreview ? (
+//                   <img src={photoPreview} alt="Preview" className="preview-image" />
+//                 ) : (
+//                   <div className="camera-icon">📷</div>
+//                 )}
+//               </div>
+//             </label>
+//             <p className="photo-text">Click to upload photo (Max 5MB)</p>
+//           </div>
+//         </div>
+
+//         <div className="form-section">
+//           <div className="form-row">
+//             <div className="form-field">
+//               <label className="field-label">Full Name</label>
+//               <div className="input-with-icon">
+//                 <span className="input-icon">👤</span>
+//                 <input
+//                   type="text"
+//                   name="full_name"
+//                   placeholder=""
+//                   value={formData.full_name}
+//                   onChange={handleChange}
+//                   className={`form-input-inline ${formErrors.full_name ? 'error' : ''}`}
+//                 />
+//               </div>
+//               {formErrors.full_name && <div className="error-message">{formErrors.full_name}</div>}
+//             </div>
+
+//             <div className="form-field">
+//               <label className="field-label">Email Address</label>
+//               <div className="input-with-icon">
+//                 <span className="input-icon">📧</span>
+//                 <input
+//                   type="email"
+//                   name="email"
+//                   placeholder=""
+//                   value={formData.email}
+//                   onChange={handleChange}
+//                   className={`form-input-inline ${formErrors.email ? 'error' : ''}`}
+//                 />
+//               </div>
+//               {formErrors.email && <div className="error-message">{formErrors.email}</div>}
+//             </div>
+
+//             <div className="form-field">
+//               <label className="field-label">Aadhar Number</label>
+//               <div className="input-with-icon">
+//                 <span className="input-icon">🆔</span>
+//                 <input
+//                   type="text"
+//                   name="aadhar_number"
+//                   placeholder=""
+//                   value={formData.aadhar_number}
+//                   onChange={handleChange}
+//                   className={`form-input-inline ${formErrors.aadhar_number ? 'error' : ''}`}
+//                   maxLength="12"
+//                 />
+//               </div>
+//               {formErrors.aadhar_number && <div className="error-message">{formErrors.aadhar_number}</div>}
+//             </div>
+//           </div>
+
+//           <div className="form-row">
+//             <div className="form-field phone-field">
+//               <label className="field-label">Phone Number</label>
+//               <div className="input-with-icon">
+//                 <span className="input-icon">📞</span>
+//                 <input
+//                   type="text"
+//                   name="phone_number"
+//                   placeholder=""
+//                   value={formData.phone_number}
+//                   onChange={handleChange}
+//                   className={`form-input-inline ${formErrors.phone_number ? 'error' : ''}`}
+//                 />
+//               </div>
+//               {formErrors.phone_number && <div className="error-message">{formErrors.phone_number}</div>}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   const renderAddressDetails = () => (
+//     <div className="step-content">
+//       <div className="form-grid">
+//         <div className="input-group full-width">
+//           <label className="input-label">Address Line 1 *</label>
+//           <input
+//             type="text"
+//             name="address_line1"
+//             placeholder="Enter address line 1"
+//             value={formData.address_line1}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.address_line1 ? 'error' : ''}`}
+//           />
+//           {formErrors.address_line1 && <div className="error-message">{formErrors.address_line1}</div>}
+//         </div>
+
+//         <div className="input-group full-width">
+//           <label className="input-label">Address Line 2</label>
+//           <input
+//             type="text"
+//             name="address_line2"
+//             placeholder="Enter address line 2 (optional)"
+//             value={formData.address_line2}
+//             onChange={handleChange}
+//             className="form-input"
+//           />
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">State *</label>
+//           <select
+//             name="state"
+//             value={formData.state}
+//             onChange={handleChange}
+//             className={`form-select ${formErrors.state ? 'error' : ''}`}
+//           >
+//             <option value="">Select State</option>
+//             {Object.keys(statesWithDistricts).map(state => (
+//               <option key={state} value={state}>{state}</option>
+//             ))}
+//           </select>
+//           {formErrors.state && <div className="error-message">{formErrors.state}</div>}
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">District *</label>
+//           <select
+//             name="district"
+//             value={formData.district}
+//             onChange={handleChange}
+//             disabled={!formData.state}
+//             className={`form-select ${formErrors.district ? 'error' : ''}`}
+//           >
+//             <option value="">Select District</option>
+//             {formData.state && statesWithDistricts[formData.state].map(dist => (
+//               <option key={dist} value={dist}>{dist}</option>
+//             ))}
+//           </select>
+//           {formErrors.district && <div className="error-message">{formErrors.district}</div>}
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">Pincode *</label>
+//           <input
+//             type="text"
+//             name="pincode"
+//             placeholder="Enter 6-digit pincode"
+//             value={formData.pincode}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.pincode ? 'error' : ''}`}
+//             maxLength="6"
+//           />
+//           {formErrors.pincode && <div className="error-message">{formErrors.pincode}</div>}
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   const renderBusinessDetails = () => (
+//     <div className="step-content">
+//       <div className="form-grid">
+//         <div className="input-group">
+//           <label className="input-label">Business Name *</label>
+//           <input
+//             type="text"
+//             name="business_name"
+//             placeholder="Enter business name"
+//             value={formData.business_name}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.business_name ? 'error' : ''}`}
+//           />
+//           {formErrors.business_name && <div className="error-message">{formErrors.business_name}</div>}
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">Business Type</label>
+//           <select
+//             name="business_type"
+//             value={formData.business_type}
+//             onChange={handleChange}
+//             className="form-select"
+//           >
+//             <option value="">Select Business Type</option>
+//             {businessTypes.map(type => (
+//               <option key={type.value} value={type.value}>{type.label}</option>
+//             ))}
+//           </select>
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">GST Number</label>
+//           <input
+//             type="text"
+//             name="gst_number"
+//             placeholder="Enter GST number (optional)"
+//             value={formData.gst_number}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.gst_number ? 'error' : ''}`}
+//           />
+//           {formErrors.gst_number && <div className="error-message">{formErrors.gst_number}</div>}
+//           <small className="input-hint">Format: 22AAAAA0000A1Z5</small>
+//         </div>
+
+//         <div className="input-group full-width">
+//           <label className="input-label">Business Address *</label>
+//           <textarea
+//             name="business_address"
+//             placeholder="Enter complete business address"
+//             value={formData.business_address}
+//             onChange={handleChange}
+//             className={`form-textarea ${formErrors.business_address ? 'error' : ''}`}
+//             rows="3"
+//           />
+//           {formErrors.business_address && <div className="error-message">{formErrors.business_address}</div>}
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   const renderBankDetails = () => (
+//     <div className="step-content">
+//       <div className="form-grid">
+//         <div className="input-group">
+//           <label className="input-label">Account Holder Name *</label>
+//           <input
+//             type="text"
+//             name="account_holder_name"
+//             placeholder="Enter account holder name"
+//             value={formData.account_holder_name}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.account_holder_name ? 'error' : ''}`}
+//           />
+//           {formErrors.account_holder_name && <div className="error-message">{formErrors.account_holder_name}</div>}
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">Account Number *</label>
+//           <input
+//             type="text"
+//             name="account_number"
+//             placeholder="Enter account number"
+//             value={formData.account_number}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.account_number ? 'error' : ''}`}
+//           />
+//           {formErrors.account_number && <div className="error-message">{formErrors.account_number}</div>}
+//         </div>
+
+//         <div className="input-group">
+//           <label className="input-label">IFSC Code *</label>
+//           <input
+//             type="text"
+//             name="ifsc_code"
+//             placeholder="Enter IFSC code"
+//             value={formData.ifsc_code}
+//             onChange={handleChange}
+//             className={`form-input ${formErrors.ifsc_code ? 'error' : ''}`}
+//           />
+//           {formErrors.ifsc_code && <div className="error-message">{formErrors.ifsc_code}</div>}
+//           <small className="input-hint">Format: ABCD0123456</small>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   const renderReviewSubmit = () => (
+//     <div className="step-content">
+//       <div className="review-section">
+//         <h3 className="section-title">📋 Review Your Information</h3>
+        
+//         <div className="review-cards">
+//           <div className="review-card">
+//             <h4>👤 Personal Information</h4>
+//             <div className="review-item"><strong>Name:</strong> {formData.full_name}</div>
+//             <div className="review-item"><strong>Phone:</strong> {formData.phone_number}</div>
+//             {formData.email && <div className="review-item"><strong>Email:</strong> {formData.email}</div>}
+//             <div className="review-item"><strong>Aadhar:</strong> {formData.aadhar_number}</div>
+//             <div className="review-item">
+//               <strong>Address:</strong> {formData.address_line1}
+//               {formData.address_line2 && `, ${formData.address_line2}`}, {formData.district}, {formData.state} - {formData.pincode}
+//             </div>
+//           </div>
+
+//           <div className="review-card">
+//             <h4>🏢 Business Details</h4>
+//             <div className="review-item"><strong>Business Name:</strong> {formData.business_name}</div>
+//             {formData.business_type && <div className="review-item"><strong>Type:</strong> {businessTypes.find(t => t.value === formData.business_type)?.label}</div>}
+//             {formData.gst_number && <div className="review-item"><strong>GST:</strong> {formData.gst_number}</div>}
+//             <div className="review-item"><strong>Address:</strong> {formData.business_address}</div>
+//           </div>
+
+//           <div className="review-card">
+//             <h4>🏦 Bank Details</h4>
+//             <div className="review-item"><strong>Account Holder:</strong> {formData.account_holder_name}</div>
+//             <div className="review-item"><strong>Account Number:</strong> {formData.account_number}</div>
+//             <div className="review-item"><strong>IFSC Code:</strong> {formData.ifsc_code}</div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <div className="vendor-registration">
+//       <style jsx>{`
+//         .vendor-registration {
+//           min-height: 100vh;
+//           background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+//           padding: 2rem 1rem;
+//         }
+
+//         .registration-container {
+//           max-width: 1000px;
+//           margin: 0 auto;
+//         }
+
+//         .header {
+//           text-align: center;
+//           background: linear-gradient(135deg, #4a5568 0%, #718096 100%);
+//           color: white;
+//           padding: 3rem 2rem;
+//           border-radius: 0.75rem;
+//           margin-bottom: 2rem;
+//           box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+//         }
+
+//         .header-icon {
+//           font-size: 3rem;
+//           margin-bottom: 1rem;
+//         }
+
+//         .header h1 {
+//           font-size: 2rem;
+//           font-weight: 700;
+//           margin-bottom: 0.5rem;
+//         }
+
+//         .header p {
+//           font-size: 1rem;
+//           opacity: 0.9;
+//           max-width: 600px;
+//           margin: 0 auto;
+//           line-height: 1.5;
+//         }
+
+//         .stepper {
+//           background: white;
+//           border-radius: 1rem;
+//           padding: 2rem;
+//           margin-bottom: 2rem;
+//           box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+//           border: 1px solid #e5e7eb;
+//         }
+
+//         .stepper-container {
+//           display: flex;
+//           justify-content: center;
+//           align-items: center;
+//           gap: 2rem;
+//           padding: 1rem 0;
+//         }
+
+//         .stepper-container::before {
+//           display: none;
+//         }
+
+//         .step {
+//           display: flex;
+//           flex-direction: column;
+//           align-items: center;
+//           position: relative;
+//           z-index: 2;
+//           background: white;
+//           padding: 0;
+//         }
+
+//         .step-icon {
+//           width: 50px;
+//           height: 50px;
+//           border-radius: 50%;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           font-size: 1.2rem;
+//           margin-bottom: 0.5rem;
+//           background: #f3f4f6;
+//           color: #9ca3af;
+//           transition: all 0.3s ease;
+//         }
+
+//         .step-icon.active {
+//           background: #232f3e;
+//           color: white;
+//         }
+
+//         .step-icon.completed {
+//           background: #16a34a;
+//           color: white;
+//         }
+
+//         .step-label {
+//           font-size: 0.85rem;
+//           font-weight: 500;
+//           color: #9ca3af;
+//           text-align: center;
+//         }
+
+//         .step-label.active {
+//           color: #232f3e;
+//           font-weight: 600;
+//         }
+
+//         .personal-info-layout {
+//           display: flex;
+//           gap: 3rem;
+//           align-items: flex-start;
+//         }
+
+//         .photo-section {
+//           flex-shrink: 0;
+//         }
+
+//         .form-section {
+//           flex: 1;
+//         }
+
+//         .photo-circle {
+//           width: 120px;
+//           height: 120px;
+//           border-radius: 50%;
+//           background: #f3f4f6;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           border: 2px dashed #d1d5db;
+//           margin-bottom: 1rem;
+//           cursor: pointer;
+//           transition: all 0.3s ease;
+//           overflow: hidden;
+//         }
+
+//         .photo-circle:hover {
+//           border-color: #232f3e;
+//           background: #f8fafc;
+//         }
+
+//         .camera-icon {
+//           font-size: 2rem;
+//           color: #9ca3af;
+//         }
+
+//         .photo-text {
+//           text-align: center;
+//           font-size: 0.85rem;
+//           color: #6b7280;
+//           margin: 0;
+//           max-width: 120px;
+//         }
+
+//         .form-row {
+//           display: flex;
+//           gap: 2rem;
+//           margin-bottom: 2rem;
+//         }
+
+//         .form-field {
+//           flex: 1;
+//         }
+
+//         .phone-field {
+//           flex: 0.6;
+//         }
+
+//         .field-label {
+//           display: block;
+//           font-size: 0.9rem;
+//           font-weight: 500;
+//           color: #374151;
+//           margin-bottom: 0.5rem;
+//         }
+
+//         .input-with-icon {
+//           position: relative;
+//           display: flex;
+//           align-items: center;
+//         }
+
+//         .input-icon {
+//           position: absolute;
+//           left: 1rem;
+//           font-size: 1.1rem;
+//           color: #9ca3af;
+//           z-index: 1;
+//         }
+
+//         .form-input-inline {
+//           width: 100%;
+//           padding: 0.875rem 1rem 0.875rem 3rem;
+//           border: 1px solid #d1d5db;
+//           border-radius: 0.375rem;
+//           font-size: 0.95rem;
+//           transition: all 0.3s ease;
+//           background: white;
+//         }
+
+//         .form-input-inline:focus {
+//           outline: none;
+//           border-color: #232f3e;
+//           box-shadow: 0 0 0 3px rgba(35, 47, 62, 0.1);
+//         }
+
+//         .form-input-inline.error {
+//           border-color: #ef4444;
+//         }
+
+//         .form-container {
+//           background: white;
+//           border-radius: 1rem;
+//           padding: 2rem;
+//           margin-bottom: 2rem;
+//           box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+//           border: 1px solid #e5e7eb;
+//         }
+
+//         .step-content {
+//           min-height: 400px;
+//         }
+
+//         .step-title {
+//           font-size: 1.5rem;
+//           font-weight: 700;
+//           margin-bottom: 0.5rem;
+//           color: #111827;
+//         }
+
+//         .step-description {
+//           color: #6b7280;
+//           margin-bottom: 2rem;
+//         }
+
+//         .form-grid {
+//           display: grid;
+//           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+//           gap: 1.5rem;
+//           margin-bottom: 2rem;
+//         }
+
+//         .form-grid.two-column {
+//           grid-template-columns: 1fr 1fr;
+//         }
+
+//         .photo-upload-section {
+//           display: flex;
+//           justify-content: center;
+//           align-items: center;
+//           grid-column: 1 / -1;
+//         }
+
+//         .photo-upload {
+//           text-align: center;
+//         }
+
+//         .photo-input {
+//           display: none;
+//         }
+
+//         .photo-label {
+//           cursor: pointer;
+//           display: block;
+//         }
+
+//         .photo-preview {
+//           width: 120px;
+//           height: 120px;
+//           border-radius: 50%;
+//           border: 3px dashed #d1d5db;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           margin: 0 auto 1rem;
+//           transition: all 0.3s ease;
+//           overflow: hidden;
+//         }
+
+//         .photo-preview:hover {
+//           border-color: #232f3e;
+//           background: #f9fafb;
+//         }
+
+//         .preview-image {
+//           width: 100%;
+//           height: 100%;
+//           object-fit: cover;
+//           border-radius: 50%;
+//         }
+
+//         .photo-placeholder {
+//           display: flex;
+//           flex-direction: column;
+//           align-items: center;
+//           color: #6b7280;
+//           font-size: 2rem;
+//         }
+
+//         .photo-placeholder span {
+//           font-size: 0.9rem;
+//           margin-top: 0.5rem;
+//         }
+
+//         .photo-hint {
+//           color: #6b7280;
+//           font-size: 0.9rem;
+//           margin: 0;
+//         }
+
+//         .input-group {
+//           display: flex;
+//           flex-direction: column;
+//         }
+
+//         .input-group.full-width {
+//           grid-column: 1 / -1;
+//         }
+
+//         .input-label {
+//           font-weight: 600;
+//           color: #374151;
+//           margin-bottom: 0.5rem;
+//           font-size: 0.9rem;
+//         }
+
+//         .form-input, .form-select, .form-textarea {
+//           padding: 0.75rem 1rem;
+//           border: 1px solid #d1d5db;
+//           border-radius: 0.5rem;
+//           font-size: 1rem;
+//           transition: all 0.3s ease;
+//           background: white;
+//         }
+
+//         .form-input:focus, .form-select:focus, .form-textarea:focus {
+//           outline: none;
+//           border-color: #232f3e;
+//           box-shadow: 0 0 0 3px rgba(35, 47, 62, 0.1);
+//         }
+
+//         .form-input.error, .form-select.error, .form-textarea.error {
+//           border-color: #ef4444;
+//         }
+
+//         .form-select:disabled {
+//           background: #f9fafb;
+//           color: #9ca3af;
+//           cursor: not-allowed;
+//         }
+
+//         .error-message {
+//           color: #ef4444;
+//           font-size: 0.85rem;
+//           margin-top: 0.25rem;
+//         }
+
+//         .input-hint {
+//           color: #6b7280;
+//           font-size: 0.8rem;
+//           margin-top: 0.25rem;
+//         }
+
+//         .section-title {
+//           font-size: 1.2rem;
+//           font-weight: 700;
+//           color: #111827;
+//           margin-bottom: 1.5rem;
+//           padding-bottom: 0.5rem;
+//           border-bottom: 2px solid #e5e7eb;
+//         }
+
+//         .address-section {
+//           margin-top: 2rem;
+//           padding-top: 2rem;
+//           border-top: 1px solid #e5e7eb;
+//         }
+
+//         .review-section {
+//           max-width: 800px;
+//           margin: 0 auto;
+//         }
+
+//         .review-cards {
+//           display: grid;
+//           gap: 1.5rem;
+//           margin-top: 2rem;
+//         }
+
+//         .review-card {
+//           background: #f8fafc;
+//           border: 1px solid #e5e7eb;
+//           border-radius: 0.75rem;
+//           padding: 1.5rem;
+//         }
+
+//         .review-card h4 {
+//           font-size: 1.1rem;
+//           font-weight: 700;
+//           color: #111827;
+//           margin-bottom: 1rem;
+//           display: flex;
+//           align-items: center;
+//           gap: 0.5rem;
+//         }
+
+//         .review-item {
+//           margin-bottom: 0.75rem;
+//           color: #374151;
+//         }
+
+//         .review-item strong {
+//           color: #111827;
+//         }
+
+//         .navigation {
+//           background: white;
+//           border-radius: 1rem;
+//           padding: 1.5rem 2rem;
+//           box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+//           border: 1px solid #e5e7eb;
+//           display: flex;
+//           justify-content: space-between;
+//           align-items: center;
+//         }
+
+//         .btn {
+//           padding: 0.75rem 2rem;
+//           border-radius: 0.5rem;
+//           font-weight: 600;
+//           font-size: 1rem;
+//           cursor: pointer;
+//           transition: all 0.3s ease;
+//           border: none;
+//           display: flex;
+//           align-items: center;
+//           gap: 0.5rem;
+//         }
+
+//         .btn-secondary {
+//           background: white;
+//           color: #6b7280;
+//           border: 1px solid #d1d5db;
+//         }
+
+//         .btn-secondary:hover:not(:disabled) {
+//           background: #f9fafb;
+//           border-color: #9ca3af;
+//         }
+
+//         .btn-secondary:disabled {
+//           opacity: 0.5;
+//           cursor: not-allowed;
+//         }
+
+//         .btn-primary {
+//           background: #232f3e;
+//           color: white;
+//           border: 1px solid #232f3e;
+//         }
+
+//         .btn-primary:hover:not(:disabled) {
+//           background: #1e3a8a;
+//           transform: translateY(-1px);
+//           box-shadow: 0 4px 12px rgba(35, 47, 62, 0.25);
+//         }
+
+//         .btn-primary:disabled {
+//           background: #9ca3af;
+//           cursor: not-allowed;
+//           transform: none;
+//         }
+
+//         .btn-success {
+//           background: #16a34a;
+//           color: white;
+//           border: 1px solid #16a34a;
+//           padding: 1rem 3rem;
+//           font-size: 1.1rem;
+//         }
+
+//         .btn-success:hover:not(:disabled) {
+//           background: #15803d;
+//           transform: translateY(-1px);
+//           box-shadow: 0 6px 20px rgba(22, 163, 74, 0.35);
+//         }
+
+//         .help-section {
+//           background: white;
+//           border-radius: 1rem;
+//           padding: 1.5rem 2rem;
+//           margin-top: 2rem;
+//           box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+//           border: 1px solid #e5e7eb;
+//           text-align: center;
+//         }
+
+//         .help-title {
+//           font-size: 1.1rem;
+//           font-weight: 700;
+//           color: #111827;
+//           margin-bottom: 1rem;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           gap: 0.5rem;
+//         }
+
+//         .help-description {
+//           color: #6b7280;
+//           margin-bottom: 1.5rem;
+//         }
+
+//         .contact-info {
+//           display: flex;
+//           justify-content: center;
+//           gap: 1rem;
+//           flex-wrap: wrap;
+//         }
+
+//         .contact-chip {
+//           background: #f3f4f6;
+//           border: 1px solid #d1d5db;
+//           border-radius: 2rem;
+//           padding: 0.5rem 1rem;
+//           display: flex;
+//           align-items: center;
+//           gap: 0.5rem;
+//           font-size: 0.9rem;
+//           color: #374151;
+//         }
+
+//         .error-alert {
+//           background: #fef2f2;
+//           border: 1px solid #fecaca;
+//           color: #dc2626;
+//           padding: 1rem;
+//           border-radius: 0.5rem;
+//           margin: 1rem 0;
+//         }
+
+//         @media (max-width: 768px) {
+//           .vendor-registration {
+//             padding: 1rem 0.5rem;
+//           }
+
+//           .header {
+//             padding: 2rem 1rem;
+//           }
+
+//           .header h1 {
+//             font-size: 1.75rem;
+//           }
+
+//           .stepper {
+//             padding: 1rem;
+//           }
+
+//           .stepper-container {
+//             flex-wrap: wrap;
+//             gap: 1rem;
+//           }
+
+//           .step {
+//             flex-direction: row;
+//             background: #f8fafc;
+//             padding: 0.5rem 1rem;
+//             border-radius: 0.5rem;
+//             border: 1px solid #e5e7eb;
+//           }
+
+//           .step-icon {
+//             width: 35px;
+//             height: 35px;
+//             margin-right: 0.75rem;
+//             margin-bottom: 0;
+//           }
+
+//           .step-label {
+//             text-align: left;
+//             font-size: 0.8rem;
+//           }
+
+//           .form-container {
+//             padding: 1.5rem;
+//           }
+
+//           .personal-info-layout {
+//             flex-direction: column;
+//             gap: 2rem;
+//             align-items: center;
+//           }
+
+//           .form-row {
+//             flex-direction: column;
+//             gap: 1.5rem;
+//           }
+
+//           .navigation {
+//             padding: 1rem;
+//             flex-direction: column;
+//             gap: 1rem;
+//           }
+
+//           .btn {
+//             width: 100%;
+//             justify-content: center;
+//           }
+
+//           .contact-info {
+//             flex-direction: column;
+//             align-items: center;
+//           }
+//         }
+//       `}</style>
+
+//       <div className="registration-container">
+//         {/* Header */}
+//         <div className="header">
+//           <div className="header-icon">🏪</div>
+//           <h1>Become a Vendor</h1>
+//           <p>
+//             Join our marketplace and reach thousands of customers. 
+//             Complete the registration process to start selling your products.
+//           </p>
+//         </div>
+
+//         {/* Progress Stepper */}
+//         <div className="stepper">
+//           <div className="stepper-container">
+//             {steps.map((step, index) => (
+//               <div key={index} className="step">
+//                 <div className={`step-icon ${index <= activeStep ? 'active' : ''} ${index < activeStep ? 'completed' : ''}`}>
+//                   {index < activeStep ? '✓' : step.icon}
+//                 </div>
+//                 <div className={`step-label ${index <= activeStep ? 'active' : ''}`}>
+//                   {step.label}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Form Content */}
+//         <div className="form-container">
+//           {activeStep === 0 && (
+//             <div>
+//               <h2 className="step-title">Personal Information</h2>
+//               <p className="step-description">
+//                 Please provide your personal details as they appear on your government ID.
+//               </p>
+//               {renderPersonalInfo()}
+//             </div>
+//           )}
+
+//           {activeStep === 1 && (
+//             <div>
+//               <h2 className="step-title">Address Details</h2>
+//               <p className="step-description">
+//                 Provide your complete residential address for communication and verification purposes.
+//               </p>
+//               {renderAddressDetails()}
+//             </div>
+//           )}
+
+//           {activeStep === 2 && (
+//             <div>
+//               <h2 className="step-title">Business Details</h2>
+//               <p className="step-description">
+//                 Tell us about your business and what you plan to sell on our platform.
+//               </p>
+//               {renderBusinessDetails()}
+//             </div>
+//           )}
+
+//           {activeStep === 3 && (
+//             <div>
+//               <h2 className="step-title">Bank Account Details</h2>
+//               <p className="step-description">
+//                 Provide your bank account details for payment processing.
+//               </p>
+//               {renderBankDetails()}
+//             </div>
+//           )}
+
+//           {activeStep === 4 && (
+//             <div>
+//               <h2 className="step-title">Review & Submit</h2>
+//               <p className="step-description">
+//                 Please review all information before submitting your vendor registration application.
+//               </p>
+//               {renderReviewSubmit()}
+//             </div>
+//           )}
+
+//           {error && (
+//             <div className="error-alert">
+//               <ErrorMessage message={error} />
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Navigation Buttons */}
+//         <div className="navigation">
+//           <button
+//             type="button"
+//             onClick={handleBack}
+//             disabled={activeStep === 0}
+//             className="btn btn-secondary"
+//           >
+//             ← Back
+//           </button>
+
+//           {activeStep < steps.length - 1 ? (
+//             <button
+//               type="button"
+//               onClick={handleNext}
+//               className="btn btn-primary"
+//             >
+//               Continue →
+//             </button>
+//           ) : (
+//             <button
+//               type="button"
+//               onClick={handleSubmit}
+//               disabled={isLoading}
+//               className="btn btn-success"
+//             >
+//               {isLoading ? (
+//                 <>
+//                   <LoadingSpinner size="small" color="white" />
+//                   Submitting...
+//                 </>
+//               ) : (
+//                 <>
+//                   ✓ Submit Application
+//                 </>
+//               )}
+//             </button>
+//           )}
+//         </div>
+
+//         {/* Help Section */}
+//         <div className="help-section">
+//           <h3 className="help-title">
+//             ℹ️ Need Help?
+//           </h3>
+//           <p className="help-description">
+//             If you have any questions about the registration process or need assistance, 
+//             please contact our vendor support team.
+//           </p>
+//           <div className="contact-info">
+//             <div className="contact-chip">
+//               📧 vendor-support@example.com
+//             </div>
+//             <div className="contact-chip">
+//               📞 +1 (555) 123-4567
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default NameRegistration;
