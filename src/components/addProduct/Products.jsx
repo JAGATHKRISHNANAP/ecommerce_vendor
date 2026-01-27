@@ -55,7 +55,7 @@
 // //     setFormData({ ...formData, category_id: categoryId, subcategory_id: '', specifications: {} });
 // //     setSubcategories([]);
 // //     setSpecifications([]);
-    
+
 // //     if (categoryId) {
 // //       try {
 // //         const data = await api.get(`/categories/${categoryId}/subcategories`);
@@ -69,7 +69,7 @@
 // //   const handleSubcategoryChange = async (subcategoryId) => {
 // //     setFormData({ ...formData, subcategory_id: subcategoryId, specifications: {} });
 // //     setSpecifications([]);
-    
+
 // //     if (subcategoryId) {
 // //       try {
 // //         const data = await api.get(`/subcategories/${subcategoryId}/specifications`);
@@ -135,7 +135,7 @@
 // //         return;
 // //       }
 // //     }
-    
+
 // //     setLoading(true);
 // //     try {
 // //       const productData = {
@@ -143,9 +143,9 @@
 // //         base_price: parseInt(formData.base_price) * 100, // Convert to cents
 // //         stock_quantity: parseInt(formData.stock_quantity) || 0
 // //       };
-      
+
 // //       await api.post('/products', productData);
-      
+
 // //       // Reset form
 // //       setFormData({
 // //         name: '',
@@ -201,13 +201,13 @@
 // //   return (
 // //     <div style={{ padding: '20px' }}>
 // //       <h2>Products</h2>
-      
+
 // //       {error && (
 // //         <div style={{ color: 'red', marginBottom: '10px' }}>
 // //           {error}
 // //         </div>
 // //       )}
-      
+
 // //       <button 
 // //         onClick={() => setShowForm(true)} 
 // //         disabled={loading}
@@ -215,11 +215,11 @@
 // //       >
 // //         Add Product
 // //       </button>
-      
+
 // //       {showForm && (
 // //         <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0', backgroundColor: '#f9f9f9' }}>
 // //           <h3>Add New Product</h3>
-          
+
 // //           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
 // //             <div>
 // //               <label style={{ display: 'block', marginBottom: '5px' }}>Name *:</label>
@@ -242,7 +242,7 @@
 // //               />
 // //             </div>
 // //           </div>
-          
+
 // //           <div style={{ marginBottom: '15px' }}>
 // //             <label style={{ display: 'block', marginBottom: '5px' }}>Description:</label>
 // //             <textarea
@@ -252,7 +252,7 @@
 // //               placeholder="Enter product description"
 // //             />
 // //           </div>
-          
+
 // //           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
 // //             <div>
 // //               <label style={{ display: 'block', marginBottom: '5px' }}>Category *:</label>
@@ -282,7 +282,7 @@
 // //               </select>
 // //             </div>
 // //           </div>
-          
+
 // //           {specifications.length > 0 && (
 // //             <div style={{ marginBottom: '15px' }}>
 // //               <h4>Specifications:</h4>
@@ -335,7 +335,7 @@
 // //               </div>
 // //             </div>
 // //           )}
-          
+
 // //           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
 // //             <div>
 // //               <label style={{ display: 'block', marginBottom: '5px' }}>Base Price (₹) *:</label>
@@ -361,7 +361,7 @@
 // //               />
 // //             </div>
 // //           </div>
-          
+
 // //           <div style={{ marginBottom: '15px' }}>
 // //             <label style={{ display: 'block', marginBottom: '5px' }}>Product Images:</label>
 // //             <input
@@ -416,7 +416,7 @@
 // //               </div>
 // //             )}
 // //           </div>
-          
+
 // //           <button 
 // //             onClick={handleSubmit} 
 // //             disabled={loading}
@@ -538,7 +538,7 @@
 //     setFormData({ ...formData, category_id: categoryId, subcategory_id: '', specifications: {} });
 //     setSubcategories([]);
 //     setSpecifications([]);
-    
+
 //     if (categoryId) {
 //       try {
 //         const data = await api.get(`/categories/${categoryId}/subcategories`);
@@ -552,7 +552,7 @@
 //   const handleSubcategoryChange = async (subcategoryId) => {
 //     setFormData({ ...formData, subcategory_id: subcategoryId, specifications: {} });
 //     setSpecifications([]);
-    
+
 //     if (subcategoryId) {
 //       try {
 //         const data = await api.get(`/subcategories/${subcategoryId}/specifications`);
@@ -618,12 +618,12 @@
 //         return;
 //       }
 //     }
-    
+
 //     setLoading(true);
 //     try {
 //       // Create FormData for multipart/form-data (required for file upload)
 //       const submitData = new FormData();
-      
+
 //       // Add form fields
 //       submitData.append('name', formData.name);
 //       submitData.append('description', formData.description || '');
@@ -635,27 +635,27 @@
 //       submitData.append('sku', formData.sku || '');
 //       submitData.append('created_by', formData.created_by);
 //       submitData.append('is_active', 'true');
-      
+
 //       // Add image files
 //       images.forEach((image) => {
 //         submitData.append('images', image.file);
 //       });
-      
+
 //       // Use direct fetch instead of your API wrapper for FormData
 //       const response = await fetch('http://localhost:8000/api/v1/products', {
 //         method: 'POST',
 //         body: submitData
 //         // Don't set Content-Type header - let browser set it with boundary
 //       });
-      
+
 //       if (!response.ok) {
 //         const errorData = await response.json();
 //         throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
 //       }
-      
+
 //       const result = await response.json();
 //       console.log('Product created successfully:', result);
-      
+
 //       // Reset form
 //       setFormData({
 //         name: '',
@@ -711,7 +711,7 @@
 //   return (
 //     <div style={{ padding: '20px' }}>
 //       <h2>Products</h2>
-      
+
 //       {error && (
 //         <div style={{ 
 //           color: 'red', 
@@ -724,7 +724,7 @@
 //           {error}
 //         </div>
 //       )}
-      
+
 //       <button 
 //         onClick={() => setShowForm(true)} 
 //         disabled={loading}
@@ -740,7 +740,7 @@
 //       >
 //         Add Product
 //       </button>
-      
+
 //       {showForm && (
 //         <div style={{ 
 //           border: '1px solid #ccc', 
@@ -750,7 +750,7 @@
 //           borderRadius: '8px'
 //         }}>
 //           <h3>Add New Product</h3>
-          
+
 //           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
 //             <div>
 //               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Name *:</label>
@@ -773,7 +773,7 @@
 //               />
 //             </div>
 //           </div>
-          
+
 //           <div style={{ marginBottom: '15px' }}>
 //             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Description:</label>
 //             <textarea
@@ -783,7 +783,7 @@
 //               placeholder="Enter product description"
 //             />
 //           </div>
-          
+
 //           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
 //             <div>
 //               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Category *:</label>
@@ -819,7 +819,7 @@
 //               </select>
 //             </div>
 //           </div>
-          
+
 //           {specifications.length > 0 && (
 //             <div style={{ 
 //               marginBottom: '15px',
@@ -878,7 +878,7 @@
 //               </div>
 //             </div>
 //           )}
-          
+
 //           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
 //             <div>
 //               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Base Price (₹) *:</label>
@@ -904,7 +904,7 @@
 //               />
 //             </div>
 //           </div>
-          
+
 //           <div style={{ marginBottom: '20px' }}>
 //             <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>Product Images:</label>
 //             <input
@@ -978,7 +978,7 @@
 //               </div>
 //             )}
 //           </div>
-          
+
 //           <div style={{ borderTop: '1px solid #ddd', paddingTop: '15px' }}>
 //             <button 
 //               onClick={handleSubmit} 
@@ -1222,11 +1222,11 @@ const Products = () => {
   const fetchProductDetails = async (productId) => {
     try {
       setLoading(true);
-      
+
       // Fetch product details
       const productData = await api.get(`/products/${productId}`);
       setSelectedProduct(productData);
-      
+
       // Fetch product images
       try {
         const imagesData = await fetch(`http://localhost:8000/api/v1/products/${productId}/images`);
@@ -1240,7 +1240,7 @@ const Products = () => {
         console.error('Error fetching product images:', imgError);
         setProductImages([]);
       }
-      
+
       setShowDetails(true);
     } catch (error) {
       console.error('Error fetching product details:', error);
@@ -1264,7 +1264,7 @@ const Products = () => {
     setFormData({ ...formData, category_id: categoryId, subcategory_id: '', specifications: {} });
     setSubcategories([]);
     setSpecifications([]);
-    
+
     if (categoryId) {
       try {
         const data = await api.get(`/categories/${categoryId}/subcategories`);
@@ -1278,7 +1278,7 @@ const Products = () => {
   const handleSubcategoryChange = async (subcategoryId) => {
     setFormData({ ...formData, subcategory_id: subcategoryId, specifications: {} });
     setSpecifications([]);
-    
+
     if (subcategoryId) {
       try {
         const data = await api.get(`/subcategories/${subcategoryId}/specifications`);
@@ -1300,18 +1300,23 @@ const Products = () => {
     setImages([...images, ...newImages]);
   };
 
-  const removeImage = (id) => {
+  const removeImage = (id, e) => {
+    if (e) e.preventDefault();
     setImages(prevImages => {
       const filtered = prevImages.filter(img => img.id !== id);
+      // If we removed the primary image, make the first remaining image primary
       if (filtered.length > 0 && !filtered.some(img => img.isPrimary)) {
-        filtered[0].isPrimary = true;
+        // Create a new object for the first image to avoid mutating the existing one
+        const firstImage = { ...filtered[0], isPrimary: true };
+        filtered[0] = firstImage;
       }
       return filtered;
     });
   };
 
-  const setPrimaryImage = (id) => {
-    setImages(prevImages => 
+  const setPrimaryImage = (id, e) => {
+    if (e) e.preventDefault();
+    setImages(prevImages =>
       prevImages.map(img => ({ ...img, isPrimary: img.id === id }))
     );
   };
@@ -1343,11 +1348,11 @@ const Products = () => {
         return;
       }
     }
-    
+
     setLoading(true);
     try {
       const submitData = new FormData();
-      
+
       submitData.append('name', formData.name);
       submitData.append('description', formData.description || '');
       submitData.append('category_id', formData.category_id.toString());
@@ -1358,24 +1363,31 @@ const Products = () => {
       submitData.append('sku', formData.sku || '');
       submitData.append('created_by', formData.created_by);
       submitData.append('is_active', 'true');
-      
-      images.forEach((image) => {
+
+      // Sort images so primary comes first (backend takes the first image as primary)
+      const sortedImages = [...images].sort((a, b) => {
+        if (a.isPrimary) return -1;
+        if (b.isPrimary) return 1;
+        return 0;
+      });
+
+      sortedImages.forEach((image) => {
         submitData.append('images', image.file);
       });
-      
+
       const response = await fetch('http://localhost:8000/api/v1/products', {
         method: 'POST',
         body: submitData
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       console.log('Product created successfully:', result);
-      
+
       setFormData({
         name: '',
         description: '',
@@ -1434,12 +1446,12 @@ const Products = () => {
     return (
       <div style={{ padding: '20px' }}>
         <div style={{ marginBottom: '20px' }}>
-          <button 
+          <button
             onClick={handleBackToList}
-            style={{ 
-              backgroundColor: '#6c757d', 
-              color: 'white', 
-              border: 'none', 
+            style={{
+              backgroundColor: '#6c757d',
+              color: 'white',
+              border: 'none',
               padding: '10px 20px',
               borderRadius: '4px',
               cursor: 'pointer',
@@ -1452,11 +1464,11 @@ const Products = () => {
         </div>
 
         {error && (
-          <div style={{ 
-            color: 'red', 
-            marginBottom: '10px', 
-            padding: '10px', 
-            backgroundColor: '#ffebee', 
+          <div style={{
+            color: 'red',
+            marginBottom: '10px',
+            padding: '10px',
+            backgroundColor: '#ffebee',
             border: '1px solid #f44336',
             borderRadius: '4px'
           }}>
@@ -1476,10 +1488,10 @@ const Products = () => {
                     <img
                       src={productImages.find(img => img.is_primary).image_url}
                       alt={selectedProduct.name}
-                      style={{ 
-                        width: '100%', 
-                        maxWidth: '400px', 
-                        height: '300px', 
+                      style={{
+                        width: '100%',
+                        maxWidth: '400px',
+                        height: '300px',
                         objectFit: 'cover',
                         border: '1px solid #ddd',
                         borderRadius: '8px'
@@ -1488,7 +1500,7 @@ const Products = () => {
                     <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>Primary Image</p>
                   </div>
                 )}
-                
+
                 {/* All Images Gallery */}
                 <div>
                   <h4>All Images ({productImages.length})</h4>
@@ -1498,9 +1510,9 @@ const Products = () => {
                         <img
                           src={image.image_url}
                           alt={`${selectedProduct.name} - Image ${index + 1}`}
-                          style={{ 
-                            width: '100%', 
-                            height: '100px', 
+                          style={{
+                            width: '100%',
+                            height: '100px',
                             objectFit: 'cover',
                             border: image.is_primary ? '3px solid #2196f3' : '1px solid #ddd',
                             borderRadius: '4px'
@@ -1526,9 +1538,9 @@ const Products = () => {
                 </div>
               </div>
             ) : (
-              <div style={{ 
-                padding: '40px', 
-                textAlign: 'center', 
+              <div style={{
+                padding: '40px',
+                textAlign: 'center',
                 backgroundColor: '#f5f5f5',
                 border: '1px solid #ddd',
                 borderRadius: '8px'
@@ -1545,38 +1557,38 @@ const Products = () => {
               <div style={{ marginBottom: '15px' }}>
                 <strong>Name:</strong> {selectedProduct.name}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <strong>SKU:</strong> {selectedProduct.sku || 'Not specified'}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
-                <strong>Description:</strong> 
+                <strong>Description:</strong>
                 <p style={{ marginTop: '5px', color: '#666' }}>
                   {selectedProduct.description || 'No description available'}
                 </p>
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <strong>Category:</strong> {selectedProduct.category?.name || 'Unknown'}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <strong>Subcategory:</strong> {selectedProduct.subcategory?.name || 'Unknown'}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <strong>Base Price:</strong> ₹{(selectedProduct.base_price / 100).toFixed(2)}
               </div>
-              
+
               {selectedProduct.calculated_price && selectedProduct.calculated_price !== selectedProduct.base_price && (
                 <div style={{ marginBottom: '15px' }}>
                   <strong>Final Price:</strong> ₹{(selectedProduct.calculated_price / 100).toFixed(2)}
                 </div>
               )}
-              
+
               <div style={{ marginBottom: '15px' }}>
-                <strong>Stock Quantity:</strong> 
+                <strong>Stock Quantity:</strong>
                 <span style={{
                   marginLeft: '10px',
                   padding: '4px 8px',
@@ -1588,12 +1600,12 @@ const Products = () => {
                   {selectedProduct.stock_quantity} units
                 </span>
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
-                <strong>Status:</strong> 
-                <span style={{ 
+                <strong>Status:</strong>
+                <span style={{
                   marginLeft: '10px',
-                  padding: '4px 8px', 
+                  padding: '4px 8px',
                   borderRadius: '4px',
                   backgroundColor: selectedProduct.is_active ? '#e8f5e8' : '#ffebee',
                   color: selectedProduct.is_active ? '#2e7d32' : '#c62828',
@@ -1602,11 +1614,11 @@ const Products = () => {
                   {selectedProduct.is_active ? 'Active' : 'Inactive'}
                 </span>
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <strong>Created By:</strong> {selectedProduct.created_by}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <strong>Created At:</strong> {new Date(selectedProduct.created_at).toLocaleString()}
               </div>
@@ -1639,24 +1651,24 @@ const Products = () => {
   return (
     <div style={{ padding: '20px' }}>
       <h2>Products</h2>
-      
+
       {error && (
-        <div style={{ 
-          color: 'red', 
-          marginBottom: '10px', 
-          padding: '10px', 
-          backgroundColor: '#ffebee', 
+        <div style={{
+          color: 'red',
+          marginBottom: '10px',
+          padding: '10px',
+          backgroundColor: '#ffebee',
           border: '1px solid #f44336',
           borderRadius: '4px'
         }}>
           {error}
         </div>
       )}
-      
-      <button 
-        onClick={() => setShowForm(true)} 
+
+      <button
+        onClick={() => setShowForm(true)}
         disabled={loading}
-        style={{ 
+        style={{
           marginBottom: '20px',
           backgroundColor: '#2196f3',
           color: 'white',
@@ -1668,17 +1680,17 @@ const Products = () => {
       >
         Add Product
       </button>
-      
+
       {showForm && (
-        <div style={{ 
-          border: '1px solid #ccc', 
-          padding: '20px', 
-          margin: '10px 0', 
+        <div style={{
+          border: '1px solid #ccc',
+          padding: '20px',
+          margin: '10px 0',
           backgroundColor: '#f9f9f9',
           borderRadius: '8px'
         }}>
           <h3>Add New Product</h3>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Name *:</label>
@@ -1701,7 +1713,7 @@ const Products = () => {
               />
             </div>
           </div>
-          
+
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Description:</label>
             <textarea
@@ -1711,7 +1723,7 @@ const Products = () => {
               placeholder="Enter product description"
             />
           </div>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Category *:</label>
@@ -1732,10 +1744,10 @@ const Products = () => {
                 value={formData.subcategory_id}
                 onChange={(e) => handleSubcategoryChange(e.target.value)}
                 disabled={!formData.category_id}
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: '1px solid #ddd', 
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  border: '1px solid #ddd',
                   borderRadius: '4px',
                   backgroundColor: !formData.category_id ? '#f5f5f5' : 'white'
                 }}
@@ -1747,9 +1759,9 @@ const Products = () => {
               </select>
             </div>
           </div>
-          
+
           {specifications.length > 0 && (
-            <div style={{ 
+            <div style={{
               marginBottom: '15px',
               padding: '15px',
               backgroundColor: '#f0f0f0',
@@ -1806,7 +1818,7 @@ const Products = () => {
               </div>
             </div>
           )}
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Base Price (₹) *:</label>
@@ -1832,7 +1844,7 @@ const Products = () => {
               />
             </div>
           </div>
-          
+
           <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>Product Images:</label>
             <input
@@ -1840,10 +1852,10 @@ const Products = () => {
               multiple
               accept="image/*"
               onChange={handleImageUpload}
-              style={{ 
-                marginBottom: '15px', 
-                padding: '8px', 
-                border: '1px solid #ddd', 
+              style={{
+                marginBottom: '15px',
+                padding: '8px',
+                border: '1px solid #ddd',
                 borderRadius: '4px',
                 width: '100%'
               }}
@@ -1853,8 +1865,8 @@ const Products = () => {
                 <p style={{ marginBottom: '10px', fontWeight: 'bold' }}>Selected Images ({images.length}):</p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '10px' }}>
                   {images.map(image => (
-                    <div key={image.id} style={{ 
-                      position: 'relative', 
+                    <div key={image.id} style={{
+                      position: 'relative',
                       border: image.isPrimary ? '3px solid #2196f3' : '1px solid #ddd',
                       backgroundColor: '#fff',
                       padding: '5px',
@@ -1866,13 +1878,14 @@ const Products = () => {
                         style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '4px' }}
                       />
                       <button
-                        onClick={() => removeImage(image.id)}
-                        style={{ 
-                          position: 'absolute', 
-                          top: '2px', 
-                          right: '2px', 
-                          background: '#f44336', 
-                          color: 'white', 
+                        type="button"
+                        onClick={(e) => removeImage(image.id, e)}
+                        style={{
+                          position: 'absolute',
+                          top: '2px',
+                          right: '2px',
+                          background: '#f44336',
+                          color: 'white',
                           border: 'none',
                           width: '20px',
                           height: '20px',
@@ -1884,12 +1897,13 @@ const Products = () => {
                         ×
                       </button>
                       <button
-                        onClick={() => setPrimaryImage(image.id)}
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: '2px', 
-                          left: '2px', 
-                          fontSize: '10px', 
+                        type="button"
+                        onClick={(e) => setPrimaryImage(image.id, e)}
+                        style={{
+                          position: 'absolute',
+                          bottom: '2px',
+                          left: '2px',
+                          fontSize: '10px',
                           background: image.isPrimary ? '#2196f3' : '#757575',
                           color: 'white',
                           border: 'none',
@@ -1906,16 +1920,16 @@ const Products = () => {
               </div>
             )}
           </div>
-          
+
           <div style={{ borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-            <button 
-              onClick={handleSubmit} 
+            <button
+              onClick={handleSubmit}
               disabled={loading}
-              style={{ 
-                marginRight: '10px', 
-                backgroundColor: loading ? '#ccc' : '#4caf50', 
-                color: 'white', 
-                border: 'none', 
+              style={{
+                marginRight: '10px',
+                backgroundColor: loading ? '#ccc' : '#4caf50',
+                color: 'white',
+                border: 'none',
                 padding: '12px 24px',
                 borderRadius: '4px',
                 fontSize: '16px',
@@ -1924,13 +1938,13 @@ const Products = () => {
             >
               {loading ? 'Creating Product...' : 'Create Product'}
             </button>
-            <button 
-              onClick={handleCancel} 
+            <button
+              onClick={handleCancel}
               disabled={loading}
-              style={{ 
-                backgroundColor: '#757575', 
-                color: 'white', 
-                border: 'none', 
+              style={{
+                backgroundColor: '#757575',
+                color: 'white',
+                border: 'none',
                 padding: '12px 24px',
                 borderRadius: '4px',
                 fontSize: '16px',
@@ -1946,10 +1960,10 @@ const Products = () => {
       {loading && !showForm && <div style={{ textAlign: 'center', padding: '20px' }}>Loading products...</div>}
 
       {products.length === 0 && !loading ? (
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '40px', 
-          backgroundColor: '#f5f5f5', 
+        <div style={{
+          textAlign: 'center',
+          padding: '40px',
+          backgroundColor: '#f5f5f5',
           border: '1px solid #ddd',
           borderRadius: '8px'
         }}>
@@ -1958,10 +1972,10 @@ const Products = () => {
       ) : (
         <div style={{ marginTop: '20px' }}>
           <h3>Products ({products.length})</h3>
-          <table style={{ 
-            width: '100%', 
-            border: '1px solid #ccc', 
-            borderCollapse: 'collapse', 
+          <table style={{
+            width: '100%',
+            border: '1px solid #ccc',
+            borderCollapse: 'collapse',
             backgroundColor: '#fff',
             borderRadius: '8px',
             overflow: 'hidden'
@@ -1983,13 +1997,13 @@ const Products = () => {
                 <tr key={product.product_id}>
                   <td style={{ border: '1px solid #ccc', padding: '12px' }}>
                     {product.primary_image_url ? (
-                      <img 
+                      <img
                         src={product.primary_image_url}
                         alt={product.name}
-                        style={{ 
-                          width: '50px', 
-                          height: '50px', 
-                          objectFit: 'cover', 
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          objectFit: 'cover',
                           border: '1px solid #ddd',
                           borderRadius: '4px'
                         }}
@@ -2000,12 +2014,12 @@ const Products = () => {
                       />
                     ) : null}
                     {!product.primary_image_url && (
-                      <div style={{ 
-                        width: '50px', 
-                        height: '50px', 
-                        backgroundColor: '#f0f0f0', 
-                        display: 'flex', 
-                        alignItems: 'center', 
+                      <div style={{
+                        width: '50px',
+                        height: '50px',
+                        backgroundColor: '#f0f0f0',
+                        display: 'flex',
+                        alignItems: 'center',
                         justifyContent: 'center',
                         border: '1px solid #ddd',
                         borderRadius: '4px',
@@ -2051,8 +2065,8 @@ const Products = () => {
                     </div>
                   </td>
                   <td style={{ border: '1px solid #ccc', padding: '12px' }}>
-                    <span style={{ 
-                      padding: '4px 8px', 
+                    <span style={{
+                      padding: '4px 8px',
                       borderRadius: '4px',
                       backgroundColor: product.is_active ? '#e8f5e8' : '#ffebee',
                       color: product.is_active ? '#2e7d32' : '#c62828',
