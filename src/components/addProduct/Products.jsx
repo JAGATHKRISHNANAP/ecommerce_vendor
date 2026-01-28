@@ -238,7 +238,7 @@ const Products = () => {
 
       // Sort images so primary is first (backend takes the first one as primary for new products)
       const sortedImages = [...images].sort((a, b) => (a.isPrimary ? -1 : b.isPrimary ? 1 : 0));
-
+      // jagath
       sortedImages.forEach((image) => {
         submitData.append('images', image.file);
       });
