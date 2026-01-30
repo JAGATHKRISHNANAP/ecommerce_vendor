@@ -43,7 +43,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 
-const Sidebar = ({ open, onToggle,variant }) => {
+const Sidebar = ({ open, onToggle, variant }) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -54,7 +54,7 @@ const Sidebar = ({ open, onToggle,variant }) => {
   const drawerWidth = 280;
   const collapsedWidth = 80;
 
-  
+
 
   const handleExpandClick = (itemId) => {
     setExpandedItems(prev => ({
@@ -76,9 +76,10 @@ const Sidebar = ({ open, onToggle,variant }) => {
       title: 'Products',
       icon: <Package size={20} />,
       subItems: [
-        { id: 'all-products', title: 'All Products'},
-        { id: 'add-product', title: 'Add Product' , path: '/add-product'},
-        { id: 'categories', title: 'Categories' },
+        { id: 'all-products', title: 'All Products', path: '/products' },
+        { id: 'add-product', title: 'Add Product', path: '/add-product' },
+        { id: 'categories', title: 'Categories', path: '/categories' },
+        { id: 'add-category', title: 'Add Category', path: '/add-category' },
         { id: 'inventory', title: 'Inventory' },
       ]
     },
@@ -86,15 +87,9 @@ const Sidebar = ({ open, onToggle,variant }) => {
       id: 'orders',
       title: 'Orders',
       icon: <ShoppingCart size={20} />,
-      // badge: '12',
+      // badge: '12', // Dynamic badge can be implemented later
       badgeColor: 'warning',
-      subItems: [
-        { id: 'all-orders', title: 'All Orders' },
-        { id: 'pending', title: 'Pending', badgeColor: 'warning' },
-        { id: 'processing', title: 'Processing'},
-        { id: 'completed', title: 'Completed' },
-        { id: 'cancelled', title: 'Cancelled' },
-      ]
+      path: '/orders' // Direct link to orders page, filters handled internally
     },
     {
       id: 'customers',
@@ -189,8 +184,8 @@ const Sidebar = ({ open, onToggle,variant }) => {
             backgroundColor: isActive
               ? alpha(theme.palette.primary.main, 0.15)
               : isHovered
-              ? alpha(theme.palette.primary.main, 0.05)
-              : 'transparent',
+                ? alpha(theme.palette.primary.main, 0.05)
+                : 'transparent',
             borderLeft: isActive ? `3px solid ${theme.palette.primary.main}` : '3px solid transparent',
             transition: 'all 0.2s ease',
             '&:hover': {

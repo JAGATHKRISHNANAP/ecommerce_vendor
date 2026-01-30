@@ -1165,14 +1165,18 @@
 
 // Products.jsx with Product Details View
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { api } from '../../services/api/productAPI';
 
-const Products = () => {
+const Products = ({ viewMode = 'list' }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [specifications, setSpecifications] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(viewMode === 'add');
   const [showDetails, setShowDetails] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [productImages, setProductImages] = useState([]);
@@ -1194,10 +1198,39 @@ const Products = () => {
     created_by: 'admin'
   });
 
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+      category_id: '',
+      subcategory_id: '',
+      specifications: {},
+      base_price: '',
+      stock_quantity: 0,
+      sku: '',
+      group_id: '',
+      created_by: 'admin'
+    });
+    setImages([]);
+    setSubcategories([]);
+    setSpecifications([]);
+    setError('');
+    setExistingImages([]);
+    setEditingProduct(null);
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    setShowForm(viewMode === 'add');
+    if (viewMode === 'list') {
+      setEditingProduct(null);
+      resetForm();
+    }
+  }, [viewMode]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -1462,25 +1495,7 @@ const Products = () => {
       const result = await response.json();
       console.log('Product saved successfully:', result);
 
-      setFormData({
-        name: '',
-        description: '',
-        category_id: '',
-        subcategory_id: '',
-        specifications: {},
-        base_price: '',
-        stock_quantity: 0,
-        sku: '',
-        group_id: '',
-        created_by: 'admin'
-      });
-      setImages([]);
-      setExistingImages([]);
-      setSubcategories([]);
-      setSpecifications([]);
-      setShowForm(false);
-      setEditingProduct(null);
-      setError('');
+      navigate('/products');
       fetchProducts();
     } catch (error) {
       console.error('Error saving product:', error);
@@ -1491,25 +1506,7 @@ const Products = () => {
   };
 
   const handleCancel = () => {
-    setShowForm(false);
-    setEditingProduct(null);
-    setExistingImages([]);
-    setFormData({
-      name: '',
-      description: '',
-      category_id: '',
-      subcategory_id: '',
-      specifications: {},
-      base_price: '',
-      stock_quantity: 0,
-      sku: '',
-      group_id: '',
-      created_by: 'admin'
-    });
-    setImages([]);
-    setSubcategories([]);
-    setSpecifications([]);
-    setError('');
+    navigate('/products');
   };
 
   const handleSpecificationChange = (specName, value) => {
@@ -1745,21 +1742,23 @@ const Products = () => {
         </div>
       )}
 
-      <button
-        onClick={() => setShowForm(true)}
-        disabled={loading}
-        style={{
-          marginBottom: '20px',
-          backgroundColor: '#2196f3',
-          color: 'white',
-          border: 'none',
-          padding: '10px 20px',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}
-      >
-        Add Product
-      </button>
+      {!showForm && (
+        <button
+          onClick={() => navigate('/add-product')}
+          disabled={loading}
+          style={{
+            marginBottom: '20px',
+            backgroundColor: '#2196f3',
+            color: 'white',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Add Product
+        </button>
+      )}
 
       {showForm && (
         <div style={{
@@ -2184,7 +2183,7 @@ const Products = () => {
 
       {loading && !showForm && <div style={{ textAlign: 'center', padding: '20px' }}>Loading products...</div>}
 
-      {
+      {!showForm && (
         products.length === 0 && !loading ? (
           <div style={{
             textAlign: 'center',
@@ -2338,7 +2337,7 @@ const Products = () => {
             </table>
           </div>
         )
-      }
+      )}
     </div >
   );
 };

@@ -71,6 +71,15 @@ api.interceptors.response.use(
 
     // Handle 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Backend does not currently support refresh tokens.
+      // Redirect to login immediately.
+      removeToken()
+      if (window.location.pathname !== '/login') {
+         window.location.href = '/login'
+      }
+      return Promise.reject(error)
+
+      /* Refresh logic disabled until backend support is added
       if (isRefreshing) {
         // If already refreshing, queue the request
         return new Promise((resolve, reject) => {
@@ -88,34 +97,13 @@ api.interceptors.response.use(
 
       try {
         const refreshToken = getRefreshToken()
-        if (refreshToken) {
-          const response = await axios.post(`${config.API_BASE_URL}/auth/refresh`, {
-            refreshToken
-          })
-          
-          const { token } = response.data
-          setToken(token)
-          
-          processQueue(null, token)
-          
-          // Retry original request with new token
-          originalRequest.headers.Authorization = `Bearer ${token}`
-          return api(originalRequest)
-        }
+        // ... (refresh logic)
       } catch (refreshError) {
-        // Refresh failed, redirect to login
-        processQueue(refreshError, null)
-        removeToken()
-        
-        // Only redirect if not already on login page
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login'
-        }
-        
-        return Promise.reject(refreshError)
+        // ...
       } finally {
         isRefreshing = false
       }
+      */
     }
 
     // Handle specific error status codes

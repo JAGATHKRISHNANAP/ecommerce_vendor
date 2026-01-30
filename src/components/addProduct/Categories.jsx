@@ -1,10 +1,12 @@
 // Categories.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api/productAPI';
 
-const Categories = ({ onSelectCategory }) => {
+const Categories = ({ onSelectCategory, viewMode = 'list' }) => {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(viewMode === 'add');
   const [formData, setFormData] = useState({ name: '', description: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -12,6 +14,10 @@ const Categories = ({ onSelectCategory }) => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    setShowForm(viewMode === 'add');
+  }, [viewMode]);
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -32,12 +38,12 @@ const Categories = ({ onSelectCategory }) => {
       setError('Category name is required');
       return;
     }
-    
+
     setLoading(true);
     try {
       await api.post('/categories', formData);
       setFormData({ name: '', description: '' });
-      setShowForm(false);
+      navigate('/categories');
       setError('');
       fetchCategories();
     } catch (error) {
@@ -49,7 +55,7 @@ const Categories = ({ onSelectCategory }) => {
   };
 
   const handleCancel = () => {
-    setShowForm(false);
+    navigate('/categories');
     setFormData({ name: '', description: '' });
     setError('');
   };
@@ -57,21 +63,23 @@ const Categories = ({ onSelectCategory }) => {
   return (
     <div style={{ padding: '20px' }}>
       <h2>Categories</h2>
-      
+
       {error && (
         <div style={{ color: 'red', marginBottom: '10px' }}>
           {error}
         </div>
       )}
-      
-      <button 
-        onClick={() => setShowForm(true)} 
-        disabled={loading}
-        style={{ marginBottom: '20px' }}
-      >
-        Add Category
-      </button>
-      
+
+      {!showForm && (
+        <button
+          onClick={() => navigate('/add-category')}
+          disabled={loading}
+          style={{ marginBottom: '20px' }}
+        >
+          Add Category
+        </button>
+      )}
+
       {showForm && (
         <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0', backgroundColor: '#f9f9f9' }}>
           <h3>Add New Category</h3>
@@ -94,8 +102,8 @@ const Categories = ({ onSelectCategory }) => {
               placeholder="Enter category description"
             />
           </div>
-          <button 
-            onClick={handleSubmit} 
+          <button
+            onClick={handleSubmit}
             disabled={loading}
             style={{ marginRight: '10px' }}
           >
@@ -109,37 +117,39 @@ const Categories = ({ onSelectCategory }) => {
 
       {loading && !showForm && <div>Loading categories...</div>}
 
-      <div>
-        {categories.length === 0 && !loading ? (
-          <p>No categories found. Create your first category!</p>
-        ) : (
-          categories.map(category => (
-            <div 
-              key={category.category_id} 
-              style={{ 
-                border: '1px solid #ddd', 
-                margin: '10px 0', 
-                padding: '15px',
-                backgroundColor: '#fff'
-              }}
-            >
-              <h3 style={{ margin: '0 0 10px 0' }}>{category.name}</h3>
-              <p style={{ margin: '0 0 10px 0', color: '#666' }}>
-                {category.description || 'No description'}
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#999' }}>
-                Status: {category.is_active ? 'Active' : 'Inactive'}
-              </p>
-              <button 
-                onClick={() => onSelectCategory(category)}
-                style={{ backgroundColor: '#007bff', color: 'white', border: 'none', padding: '5px 10px' }}
+      {!showForm && (
+        <div>
+          {categories.length === 0 && !loading ? (
+            <p>No categories found. Create your first category!</p>
+          ) : (
+            categories.map(category => (
+              <div
+                key={category.category_id}
+                style={{
+                  border: '1px solid #ddd',
+                  margin: '10px 0',
+                  padding: '15px',
+                  backgroundColor: '#fff'
+                }}
               >
-                Manage Subcategories →
-              </button>
-            </div>
-          ))
-        )}
-      </div>
+                <h3 style={{ margin: '0 0 10px 0' }}>{category.name}</h3>
+                <p style={{ margin: '0 0 10px 0', color: '#666' }}>
+                  {category.description || 'No description'}
+                </p>
+                <p style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#999' }}>
+                  Status: {category.is_active ? 'Active' : 'Inactive'}
+                </p>
+                <button
+                  onClick={() => navigate(`/categories/${category.category_id}`)}
+                  style={{ backgroundColor: '#007bff', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
+                >
+                  Manage Subcategories →
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };

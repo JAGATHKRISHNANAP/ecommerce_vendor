@@ -1,8 +1,13 @@
 // Subcategories.jsx
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api/productAPI';
 
-const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
+const Subcategories = ({ category: propCategory, onBack: propOnBack, onSelectSubcategory: propOnSelectSubcategory }) => {
+  const { categoryId } = useParams();
+  const navigate = useNavigate();
+
+  const [category, setCategory] = useState(propCategory || null);
   const [subcategories, setSubcategories] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', description: '' });
@@ -10,12 +15,54 @@ const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (propCategory) {
+      setCategory(propCategory);
+    } else if (categoryId) {
+      fetchCategoryDetails(categoryId);
+    }
+  }, [propCategory, categoryId]);
+
+  useEffect(() => {
     if (category) {
       fetchSubcategories();
     }
   }, [category]);
 
+  const fetchCategoryDetails = async (id) => {
+    setLoading(true);
+    try {
+      // Assuming API supports fetching single category. 
+      // If not, we might need to fetch all and find it, but standard REST usually supports ID.
+      // Or we check if the backend has this endpoint. 
+      // Based on previous code in Products.jsx, we saw api.get('/categories') returning list. 
+      // Let's try to get from list if single endpoint fails or just try single first.
+      // Actually, Products.jsx used api.get('/categories'). 
+      // Let's safe bet: fetch all and find. 
+      // Wait, Categories.jsx fetched all. 
+      // Let's try direct fetch first, if it fails, fallback? 
+      // Actually, the user's backend seems to be Flask or similar. 
+      // Let's try `api.get('/categories/' + id)` first.
+      // If that 404s, we can adjust.
+      try {
+        const data = await api.get(`/categories/${id}`);
+        setCategory(data);
+      } catch (e) {
+        // Fallback: fetch all and find
+        const allCategories = await api.get('/categories');
+        const found = allCategories.find(c => c.category_id.toString() === id);
+        if (found) setCategory(found);
+        else throw new Error('Category not found');
+      }
+    } catch (error) {
+      console.error('Error fetching category details:', error);
+      setError('Failed to fetch category details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchSubcategories = async () => {
+    if (!category) return;
     setLoading(true);
     try {
       const data = await api.get(`/categories/${category.category_id}/subcategories`);
@@ -34,7 +81,7 @@ const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
       setError('Subcategory name is required');
       return;
     }
-    
+
     setLoading(true);
     try {
       await api.post(`/categories/${category.category_id}/subcategories`, formData);
@@ -56,32 +103,45 @@ const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
     setError('');
   };
 
+  const handleBack = () => {
+    if (propOnBack) {
+      propOnBack();
+    } else {
+      navigate('/categories');
+    }
+  };
+
+  if (!category && loading) return <div>Loading category...</div>;
+  if (!category) return <div>Category not found or loading...</div>;
+
   return (
     <div style={{ padding: '20px' }}>
-      <button 
-        onClick={onBack}
+      <button
+        onClick={handleBack}
         style={{ marginBottom: '20px', backgroundColor: '#6c757d', color: 'white', border: 'none', padding: '5px 10px' }}
       >
         ← Back to Categories
       </button>
-      
+
       <h2>{category.name} - Subcategories</h2>
       <p style={{ color: '#666', marginBottom: '20px' }}>{category.description}</p>
-      
+
       {error && (
         <div style={{ color: 'red', marginBottom: '10px' }}>
           {error}
         </div>
       )}
-      
-      <button 
-        onClick={() => setShowForm(true)} 
-        disabled={loading}
-        style={{ marginBottom: '20px' }}
-      >
-        Add Subcategory
-      </button>
-      
+
+      {!showForm && (
+        <button
+          onClick={() => setShowForm(true)}
+          disabled={loading}
+          style={{ marginBottom: '20px' }}
+        >
+          Add Subcategory
+        </button>
+      )}
+
       {showForm && (
         <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0', backgroundColor: '#f9f9f9' }}>
           <h3>Add New Subcategory</h3>
@@ -104,8 +164,8 @@ const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
               placeholder="Enter subcategory description"
             />
           </div>
-          <button 
-            onClick={handleSubmit} 
+          <button
+            onClick={handleSubmit}
             disabled={loading}
             style={{ marginRight: '10px' }}
           >
@@ -120,15 +180,15 @@ const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
       {loading && !showForm && <div>Loading subcategories...</div>}
 
       <div>
-        {subcategories.length === 0 && !loading ? (
+        {subcategories.length === 0 && !loading && !showForm ? (
           <p>No subcategories found. Create your first subcategory!</p>
         ) : (
-          subcategories.map(subcategory => (
-            <div 
-              key={subcategory.subcategory_id} 
-              style={{ 
-                border: '1px solid #ddd', 
-                margin: '10px 0', 
+          !showForm && subcategories.map(subcategory => (
+            <div
+              key={subcategory.subcategory_id}
+              style={{
+                border: '1px solid #ddd',
+                margin: '10px 0',
                 padding: '15px',
                 backgroundColor: '#fff'
               }}
@@ -140,9 +200,9 @@ const Subcategories = ({ category, onBack, onSelectSubcategory }) => {
               <p style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#999' }}>
                 Status: {subcategory.is_active ? 'Active' : 'Inactive'}
               </p>
-              <button 
-                onClick={() => onSelectSubcategory(subcategory)}
-                style={{ backgroundColor: '#28a745', color: 'white', border: 'none', padding: '5px 10px' }}
+              <button
+                onClick={() => navigate(`/subcategories/${subcategory.subcategory_id}/specifications`)}
+                style={{ backgroundColor: '#28a745', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
               >
                 Manage Specifications →
               </button>
