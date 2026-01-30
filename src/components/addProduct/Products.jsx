@@ -1202,7 +1202,8 @@ const Products = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const data = await api.get('/products');
+      // Fetch 1000 products and disable grouping to show all variants
+      const data = await api.get('/products?per_page=1000&group_products=false');
       setProducts(data.products || []);
       setError('');
     } catch (error) {
