@@ -1,5 +1,5 @@
 // api.js - API Service
-const API_BASE = 'http://localhost:8000/api/v1';
+const API_BASE = 'http://65.1.248.179:8000/api/v1';
 
 export const api = {
   get: async (endpoint) => {

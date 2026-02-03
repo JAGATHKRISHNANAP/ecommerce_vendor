@@ -11,7 +11,7 @@ const CategoryManagement = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showSubcategoryModal, setShowSubcategoryModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [modalType, setModalType] = useState('category'); // 'category' or 'subcategory'
+  //   const [modalType, setModalType] = useState('category'); // 'category' or 'subcategory'
 
   // Form states
   const [categoryForm, setCategoryForm] = useState({
@@ -27,7 +27,7 @@ const CategoryManagement = () => {
   });
 
   // API Base URL - adjust this to match your backend
-  const API_BASE = 'http://localhost:8000/api/v1';
+  const API_BASE = 'http://65.1.248.179:8000/api/v1';
 
   // Fetch categories
   const fetchCategories = async () => {
@@ -285,11 +285,10 @@ const CategoryManagement = () => {
                         <p className="text-gray-600 mt-1">{category.description}</p>
                       )}
                       <div className="flex items-center gap-4 mt-2">
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          category.is_active 
-                            ? 'bg-green-100 text-green-800' 
+                        <span className={`px-2 py-1 rounded-full text-xs ${category.is_active
+                            ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
-                        }`}>
+                          }`}>
                           {category.is_active ? 'Active' : 'Inactive'}
                         </span>
                         <span className="text-sm text-gray-500">
@@ -334,11 +333,10 @@ const CategoryManagement = () => {
                                 ID: {subcategory.subcategory_id}
                               </span>
                               {subcategory.is_active !== undefined && (
-                                <span className={`px-2 py-1 rounded-full text-xs ${
-                                  subcategory.is_active 
-                                    ? 'bg-green-100 text-green-800' 
+                                <span className={`px-2 py-1 rounded-full text-xs ${subcategory.is_active
+                                    ? 'bg-green-100 text-green-800'
                                     : 'bg-red-100 text-red-800'
-                                }`}>
+                                  }`}>
                                   {subcategory.is_active ? 'Active' : 'Inactive'}
                                 </span>
                               )}
@@ -388,7 +386,7 @@ const CategoryManagement = () => {
                 </svg>
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -403,7 +401,7 @@ const CategoryManagement = () => {
                   placeholder="Enter category name"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description
@@ -416,7 +414,7 @@ const CategoryManagement = () => {
                   placeholder="Enter category description"
                 />
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -429,7 +427,7 @@ const CategoryManagement = () => {
                   Active category
                 </label>
               </div>
-              
+
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
@@ -469,7 +467,7 @@ const CategoryManagement = () => {
                 </svg>
               </button>
             </div>
-            
+
             {selectedCategory && (
               <div className="mb-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-800">
@@ -477,7 +475,7 @@ const CategoryManagement = () => {
                 </p>
               </div>
             )}
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -492,7 +490,7 @@ const CategoryManagement = () => {
                   placeholder="Enter subcategory name"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description
@@ -505,7 +503,7 @@ const CategoryManagement = () => {
                   placeholder="Enter subcategory description"
                 />
               </div>
-              
+
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"

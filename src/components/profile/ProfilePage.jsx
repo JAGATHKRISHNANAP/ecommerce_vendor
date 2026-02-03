@@ -42,9 +42,9 @@ const ProfilePage = () => {
   const getImageUrl = () => {
     if (previewImage) return previewImage;
     if (!user?.vendor_photo_path) return null;
-    
-    const API_BASE_URL = 'http://localhost:8000';
-    
+
+    const API_BASE_URL = 'http://65.1.248.179:8000';
+
     try {
       if (user.vendor_photo_path.startsWith('http')) {
         return user.vendor_photo_path;
@@ -86,7 +86,7 @@ const ProfilePage = () => {
       // Here you would typically make an API call to update the user profile
       console.log('Saving profile data:', formData);
       console.log('Image file:', imageFile);
-      
+
       // Example API call structure:
       // const formDataToSend = new FormData();
       // Object.keys(formData).forEach(key => {
@@ -96,7 +96,7 @@ const ProfilePage = () => {
       //   formDataToSend.append('vendor_photo', imageFile);
       // }
       // await updateProfile(formDataToSend);
-      
+
       setIsEditing(false);
       alert('Profile updated successfully!');
     } catch (error) {
@@ -196,15 +196,15 @@ const ProfilePage = () => {
                   </IconButton>
                 )}
               </Box>
-              
+
               <Typography variant="h5" gutterBottom>
                 {user?.name || 'User Name'}
               </Typography>
-              
+
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 {user?.business_name || 'Business Name'}
               </Typography>
-              
+
               <Typography variant="body2" sx={{ color: 'gold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                 ⭐ 4.5 Vendor Rating
               </Typography>
@@ -220,7 +220,7 @@ const ProfilePage = () => {
                 Personal Information
               </Typography>
               <Divider sx={{ mb: 2 }} />
-              
+
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -233,7 +233,7 @@ const ProfilePage = () => {
                     variant={isEditing ? "outlined" : "standard"}
                   />
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
@@ -246,7 +246,7 @@ const ProfilePage = () => {
                     variant={isEditing ? "outlined" : "standard"}
                   />
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
@@ -258,7 +258,7 @@ const ProfilePage = () => {
                     variant={isEditing ? "outlined" : "standard"}
                   />
                 </Grid>
-                
+
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -278,7 +278,7 @@ const ProfilePage = () => {
                 Business Information
               </Typography>
               <Divider sx={{ mb: 2 }} />
-              
+
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -291,7 +291,7 @@ const ProfilePage = () => {
                     variant={isEditing ? "outlined" : "standard"}
                   />
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
@@ -303,7 +303,7 @@ const ProfilePage = () => {
                     variant={isEditing ? "outlined" : "standard"}
                   />
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
@@ -326,7 +326,7 @@ const ProfilePage = () => {
                 Account Statistics
               </Typography>
               <Divider sx={{ mb: 2 }} />
-              
+
               <Grid container spacing={2}>
                 <Grid item xs={6} sm={3}>
                   <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
@@ -338,7 +338,7 @@ const ProfilePage = () => {
                     </Typography>
                   </Paper>
                 </Grid>
-                
+
                 <Grid item xs={6} sm={3}>
                   <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
                     <Typography variant="h4" color="success.main">
@@ -349,7 +349,7 @@ const ProfilePage = () => {
                     </Typography>
                   </Paper>
                 </Grid>
-                
+
                 <Grid item xs={6} sm={3}>
                   <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
                     <Typography variant="h4" sx={{ color: 'gold' }}>
@@ -360,7 +360,7 @@ const ProfilePage = () => {
                     </Typography>
                   </Paper>
                 </Grid>
-                
+
                 <Grid item xs={6} sm={3}>
                   <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
                     <Typography variant="h4" color="info.main">

@@ -197,10 +197,10 @@
 //   // Function to construct the image URL
 //   const getImageUrl = () => {
 //     if (!user?.vendor_photo_path || imageError) return null;
-    
+
 //     // Option 1: If your API base URL is available
-//     const API_BASE_URL = 'http://localhost:8000'; // Replace with your actual API URL
-    
+//     const API_BASE_URL = 'http://65.1.248.179:8000'; // Replace with your actual API URL
+
 //     try {
 //       // Handle different path formats
 //       if (user.vendor_photo_path.startsWith('http')) {
@@ -220,7 +220,7 @@
 //   };
 
 //   const imageUrl = getImageUrl();
-  
+
 //   console.log('Constructed image URL:', imageUrl);
 
 //   const handleImageError = () => {
@@ -401,10 +401,10 @@ const AppHeader = ({ onToggleSidebar }) => {
   // Function to construct the image URL
   const getImageUrl = () => {
     if (!user?.vendor_photo_path || imageError) return null;
-    
+
     // Option 1: If your API base URL is available
-    const API_BASE_URL = 'http://localhost:8000'; // Replace with your actual API URL
-    
+    const API_BASE_URL = 'http://65.1.248.179:8000'; // Replace with your actual API URL
+
     try {
       // Handle different path formats
       if (user.vendor_photo_path.startsWith('http')) {
@@ -424,7 +424,7 @@ const AppHeader = ({ onToggleSidebar }) => {
   };
 
   const imageUrl = getImageUrl();
-  
+
   console.log('Constructed image URL:', imageUrl);
 
   const handleImageError = () => {
@@ -510,7 +510,7 @@ const AppHeader = ({ onToggleSidebar }) => {
           </Box>
 
           <IconButton onClick={handleMenuOpen}>
-            <Avatar 
+            <Avatar
               src={imageUrl || undefined}
               alt={user?.name || 'User'}
               onError={handleImageError}

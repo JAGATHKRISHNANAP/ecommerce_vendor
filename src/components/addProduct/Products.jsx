@@ -642,7 +642,7 @@
 //       });
 
 //       // Use direct fetch instead of your API wrapper for FormData
-//       const response = await fetch('http://localhost:8000/api/v1/products', {
+//       const response = await fetch('http://65.1.248.179:8000/api/v1/products', {
 //         method: 'POST',
 //         body: submitData
 //         // Don't set Content-Type header - let browser set it with boundary
@@ -1266,7 +1266,7 @@ const Products = ({ viewMode = 'list' }) => {
 
       // Fetch product images
       try {
-        const imagesData = await fetch(`http://localhost:8000/api/v1/products/${productId}/images`);
+        const imagesData = await fetch(`http://65.1.248.179:8000/api/v1/products/${productId}/images`);
         if (imagesData.ok) {
           const imagesResult = await imagesData.json();
           setProductImages(imagesResult.images || []);
@@ -1469,7 +1469,7 @@ const Products = ({ viewMode = 'list' }) => {
 
       if (editingProduct) {
         // UPDATE EXISTING PRODUCT
-        response = await fetch(`http://localhost:8000/api/v1/products/${editingProduct.product_id}`, {
+        response = await fetch(`http://65.1.248.179:8000/api/v1/products/${editingProduct.product_id}`, {
           method: 'PUT',
           body: submitData
         });
@@ -1481,7 +1481,7 @@ const Products = ({ viewMode = 'list' }) => {
         console.log('Product updated successfully');
       } else {
         // CREATE NEW PRODUCT
-        response = await fetch('http://localhost:8000/api/v1/products', {
+        response = await fetch('http://65.1.248.179:8000/api/v1/products', {
           method: 'POST',
           body: submitData
         });

@@ -13,7 +13,7 @@
 //     storage_capacity: '',
 //     sales_user: ''
 //   });
-  
+
 //   const [selectedImages, setSelectedImages] = useState([]);
 //   const [imagePreviews, setImagePreviews] = useState([]);
 //   const [categories, setCategories] = useState([]);
@@ -22,7 +22,7 @@
 //   const [messageType, setMessageType] = useState('');
 //   const user = useSelector(state => state.auth.user);
 
-//   const API_BASE_URL = 'http://localhost:8000/api/v1';
+//   const API_BASE_URL = 'http://65.1.248.179:8000/api/v1';
 
 //   useEffect(() => {
 //     loadCategories();
@@ -50,26 +50,26 @@
 
 //   const handleImageChange = (e) => {
 //     const files = Array.from(e.target.files);
-    
+
 //     // Validate file types and sizes
 //     const validFiles = [];
 //     const previews = [];
-    
+
 //     files.forEach(file => {
 //       // Check file type
 //       if (!file.type.startsWith('image/')) {
 //         showMessage(`${file.name} is not an image file`, 'error');
 //         return;
 //       }
-      
+
 //       // Check file size (5MB limit)
 //       if (file.size > 5 * 1024 * 1024) {
 //         showMessage(`${file.name} is too large (max 5MB)`, 'error');
 //         return;
 //       }
-      
+
 //       validFiles.push(file);
-      
+
 //       // Create preview
 //       const reader = new FileReader();
 //       reader.onload = (e) => {
@@ -79,14 +79,14 @@
 //           name: file.name,
 //           size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
 //         });
-        
+
 //         if (previews.length === validFiles.length) {
 //           setImagePreviews(previews);
 //         }
 //       };
 //       reader.readAsDataURL(file);
 //     });
-    
+
 //     setSelectedImages(validFiles);
 //   };
 
@@ -99,7 +99,7 @@
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
-    
+
 //     // Validation
 //     if (!formData.name.trim()) {
 //       showMessage('Product name is required', 'error');
@@ -128,7 +128,7 @@
 //     try {
 //       // Create FormData for multipart upload
 //       const formDataToSend = new FormData();
-      
+
 //       // Add text fields
 //       formDataToSend.append('name', formData.name);
 //       formDataToSend.append('description', formData.description || '');
@@ -137,7 +137,7 @@
 //       formDataToSend.append('stock_quantity', parseInt(formData.stock_quantity) || 0);
 //       formDataToSend.append('storage_capacity', formData.storage_capacity || '');
 //       formDataToSend.append('sales_user', user.vendor_id);
-      
+
 //       // Add image files)
 //       selectedImages.forEach((image, index) => {
 //         formDataToSend.append('images', image);
@@ -152,7 +152,7 @@
 
 //       if (response.ok) {
 //         showMessage(`Product "${formData.name}" created successfully with ${result.upload_summary.total_uploaded} images!`, 'success');
-        
+
 //         // Reset form
 //         setFormData({
 //           name: '',
@@ -165,16 +165,16 @@
 //         });
 //         setSelectedImages([]);
 //         setImagePreviews([]);
-        
+
 //         // Reset file input
 //         const fileInput = document.getElementById('images');
 //         if (fileInput) fileInput.value = '';
-        
+
 //         // Show upload summary if there were any failed uploads
 //         if (result.upload_summary.total_failed > 0) {
 //           console.log('Failed uploads:', result.upload_summary.failed_files);
 //         }
-        
+
 //       } else {
 //         const errorMessage = result.detail || `HTTP ${response.status}`;
 //         showMessage(`Failed to create product: ${errorMessage}`, 'error');
@@ -190,7 +190,7 @@
 //   const showMessage = (text, type) => {
 //     setMessage(text);
 //     setMessageType(type);
-    
+
 //     if (type === 'success') {
 //       setTimeout(() => {
 //         setMessage('');
@@ -358,7 +358,7 @@
 //   return (
 //     <div style={styles.container}>
 //       <h2 style={styles.title}>📦 Add Product with Images</h2>
-      
+
 //       {message && (
 //         <div 
 //           style={{
@@ -488,7 +488,7 @@
 //             style={styles.fileInput}
 //             disabled={loading}
 //           />
-          
+
 //           {selectedImages.length > 0 && (
 //             <div style={styles.imageCounter}>
 //               {selectedImages.length} image(s) selected
@@ -634,9 +634,9 @@ const App = () => {
   return (
     <div style={{ fontFamily: 'Arial, sans-serif' }}>
       {/* Header */}
-      <header style={{ 
-        backgroundColor: '#343a40', 
-        color: 'white', 
+      <header style={{
+        backgroundColor: '#343a40',
+        color: 'white',
         padding: '15px 20px',
         marginBottom: '20px'
       }}>
@@ -648,13 +648,13 @@ const App = () => {
 
       {/* Navigation */}
       {!selectedCategory && !selectedSubcategory && (
-        <nav style={{ 
-          padding: '0 20px', 
+        <nav style={{
+          padding: '0 20px',
           marginBottom: '20px',
           borderBottom: '1px solid #ddd',
           paddingBottom: '10px'
         }}>
-          <button 
+          <button
             onClick={() => handleViewChange('categories')}
             style={{
               marginRight: '10px',
@@ -668,7 +668,7 @@ const App = () => {
           >
             Categories
           </button>
-          <button 
+          <button
             onClick={() => handleViewChange('products')}
             style={{
               padding: '8px 16px',
@@ -690,10 +690,10 @@ const App = () => {
       </main>
 
       {/* Footer */}
-      <footer style={{ 
-        marginTop: '40px', 
-        padding: '20px', 
-        textAlign: 'center', 
+      <footer style={{
+        marginTop: '40px',
+        padding: '20px',
+        textAlign: 'center',
         borderTop: '1px solid #ddd',
         color: '#6c757d',
         fontSize: '14px'
@@ -764,7 +764,7 @@ export default App;
 //   const [loading, setLoading] = useState(false);
 //   const [message, setMessage] = useState({ text: '', type: '' });
 //   const user = useSelector(state => state.auth.user);
-//   const API_BASE_URL = 'http://localhost:8000/api/v1';
+//   const API_BASE_URL = 'http://65.1.248.179:8000/api/v1';
 
 //   useEffect(() => { loadCategories(); }, []);
 
