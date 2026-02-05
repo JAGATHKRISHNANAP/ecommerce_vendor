@@ -12,12 +12,12 @@ import NameRegistration from './NameRegistration'
 const AuthenticationPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { 
-    loginMethod, 
+  const {
+    loginMethod,
     showOtpInput,
     showNameInput,
     isAuthenticated,
-    isLoading 
+    isLoading
   } = useSelector(state => state.auth)
 
   // Handle successful authentication
@@ -33,7 +33,7 @@ const AuthenticationPage = () => {
     const code = urlParams.get('code')
     const state = urlParams.get('state')
     const provider = urlParams.get('provider')
-    
+
     if (code && state && provider) {
       // Handle SSO callback logic here
       console.log('SSO callback received:', { provider, code, state })
@@ -45,23 +45,11 @@ const AuthenticationPage = () => {
     dispatch(clearError())
   }
 
+  if (showNameInput) {
+    return <NameRegistration />
+  }
+
   const renderAuthContent = () => {
-    // Show name registration for new users
-    if (showNameInput) {
-      return <NameRegistration />
-
-    }
-
-
-  // const renderAuthContent = () => {
-  //   if (showNameInput) {
-  //     return <Navigate to="/name-registration" />;
-  //   }
-
-    // return other content
-  
-
-    
     // Phone authentication flow
     if (loginMethod === 'phone') {
       if (showOtpInput) {
@@ -69,7 +57,7 @@ const AuthenticationPage = () => {
       } else {
         return <PhoneLogin />
       }
-    } 
+    }
   }
 
   return (
@@ -84,7 +72,7 @@ const AuthenticationPage = () => {
       position: 'relative',
       overflow: 'hidden'
     }}>
-      
+
       {/* Background Animation Elements */}
       <div style={{
         position: 'absolute',
@@ -118,7 +106,7 @@ const AuthenticationPage = () => {
         position: 'relative',
         zIndex: '2'
       }}>
-        
+
         {/* Header - Don't show for name registration */}
         {!showNameInput && (
           <div style={{
@@ -137,13 +125,13 @@ const AuthenticationPage = () => {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.2)'
             }}>
-              <Shield style={{ 
-                width: '40px', 
-                height: '40px', 
+              <Shield style={{
+                width: '40px',
+                height: '40px',
                 color: '#667eea'
               }} />
             </div>
-            
+
             <h1 style={{
               fontSize: '32px',
               fontWeight: '700',
@@ -153,7 +141,7 @@ const AuthenticationPage = () => {
             }}>
               E c o m m e r c e
             </h1>
-            
+
             <p style={{
               fontSize: '16px',
               color: 'rgba(255, 255, 255, 0.9)',
@@ -186,7 +174,7 @@ const AuthenticationPage = () => {
             background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
             borderRadius: '0 24px 0 100px'
           }} />
-          
+
           <div style={{ position: 'relative', zIndex: '1' }}>
             {renderAuthContent()}
           </div>
@@ -205,8 +193,8 @@ const AuthenticationPage = () => {
               lineHeight: '1.6'
             }}>
               By continuing, you agree to our{' '}
-              <a 
-                href="#" 
+              <a
+                href="#"
                 style={{
                   color: '#ffffff',
                   textDecoration: 'none',
@@ -217,8 +205,8 @@ const AuthenticationPage = () => {
                 Terms of Service
               </a>
               {' '}and{' '}
-              <a 
-                href="#" 
+              <a
+                href="#"
                 style={{
                   color: '#ffffff',
                   textDecoration: 'none',

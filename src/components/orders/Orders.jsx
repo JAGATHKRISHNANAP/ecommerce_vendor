@@ -112,7 +112,7 @@ const Row = ({ order, onStatusUpdate }) => {
                                                 <Box display="flex" alignItems="center" gap={2}>
                                                     {item.product_image && (
                                                         <img
-                                                            src={item.product_image.startsWith('http') ? item.product_image : `http://65.1.248.179:8000${item.product_image.startsWith('/') ? '' : '/'}${item.product_image}`}
+                                                            src={item.product_image.startsWith('http') ? item.product_image : `http://localhost:8000${item.product_image.startsWith('/') ? '' : '/'}${item.product_image}`}
                                                             alt={item.product_name}
                                                             width={40}
                                                             height={40}

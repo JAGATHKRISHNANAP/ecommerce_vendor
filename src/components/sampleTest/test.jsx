@@ -27,7 +27,7 @@ const CategoryManagement = () => {
   });
 
   // API Base URL - adjust this to match your backend
-  const API_BASE = 'http://65.1.248.179:8000/api/v1';
+  const API_BASE = 'http://localhost:8000/api/v1';
 
   // Fetch categories
   const fetchCategories = async () => {
