@@ -101,13 +101,8 @@ const Products = ({ viewMode = 'list' }) => {
 
       // Fetch product images
       try {
-        const imagesData = await fetch(`http://localhost:8000/api/v1/products/${productId}/images`);
-        if (imagesData.ok) {
-          const imagesResult = await imagesData.json();
-          setProductImages(imagesResult.images || []);
-        } else {
-          setProductImages([]);
-        }
+        const imagesResult = await api.get(`/products/${productId}/images`);
+        setProductImages(imagesResult.images || []);
       } catch (imgError) {
         console.error('Error fetching product images:', imgError);
         setProductImages([]);
@@ -300,41 +295,28 @@ const Products = ({ viewMode = 'list' }) => {
         submitData.append('images', image.file);
       });
 
-      let response;
+      let result;
 
       if (editingProduct) {
         // UPDATE EXISTING PRODUCT
-        response = await fetch(`http://localhost:8000/api/v1/products/${editingProduct.product_id}`, {
-          method: 'PUT',
-          body: submitData
+        result = await api.put(`/products/${editingProduct.product_id}`, submitData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
         });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
-        }
         console.log('Product updated successfully');
       } else {
         // CREATE NEW PRODUCT
-        response = await fetch('http://localhost:8000/api/v1/products', {
-          method: 'POST',
-          body: submitData
+        result = await api.post('/products', submitData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
         });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
-        }
       }
 
-      const result = await response.json();
       console.log('Product saved successfully:', result);
 
       navigate('/products');
       fetchProducts();
     } catch (error) {
       console.error('Error saving product:', error);
-      setError(error.message || 'Failed to save product');
+      setError(error.detail || error.message || 'Failed to save product');
     } finally {
       setLoading(false);
     }

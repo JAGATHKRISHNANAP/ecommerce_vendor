@@ -1,46 +1,39 @@
-// api.js - API Service
-const API_BASE = 'http://localhost:8000/api/v1';
+import axiosInstance from './axiosInstance';
 
 export const api = {
-  get: async (endpoint) => {
-    const response = await fetch(`${API_BASE}${endpoint}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  get: async (endpoint, params = {}) => {
+    try {
+      const response = await axiosInstance.get(endpoint, { params });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
     }
-    return response.json();
   },
   
-  post: async (endpoint, data) => {
-    const response = await fetch(`${API_BASE}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  post: async (endpoint, data, config = {}) => {
+    try {
+      const response = await axiosInstance.post(endpoint, data, config);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
     }
-    return response.json();
   },
   
-  put: async (endpoint, data) => {
-    const response = await fetch(`${API_BASE}${endpoint}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  put: async (endpoint, data, config = {}) => {
+    try {
+      const response = await axiosInstance.put(endpoint, data, config);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
     }
-    return response.json();
   },
   
   delete: async (endpoint) => {
-    const response = await fetch(`${API_BASE}${endpoint}`, {
-      method: 'DELETE'
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await axiosInstance.delete(endpoint);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
     }
-    return response.json();
   }
 };
