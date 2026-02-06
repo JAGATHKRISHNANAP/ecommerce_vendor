@@ -159,9 +159,9 @@ const Specifications = ({ subcategory: propSubcategory, onBack: propOnBack }) =>
     if (propOnBack) {
       propOnBack();
     } else if (subcategory && subcategory.category_id) {
-      navigate(`/categories/${subcategory.category_id}`);
+      navigate(`/vendor/categories/${subcategory.category_id}`);
     } else {
-      navigate('/categories');
+      navigate('/vendor/categories');
     }
   };
 

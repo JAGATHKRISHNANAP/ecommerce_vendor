@@ -47,7 +47,7 @@ const AppHeader = ({ onToggleSidebar }) => {
   const handleProfile = () => {
     console.log('Profile clicked');
     handleMenuClose(); // Close the menu first
-    navigate('/profile'); // Navigate to profile page
+    navigate('/vendor/profile'); // Navigate to profile page
   };
 
   const handleLogout = () => {

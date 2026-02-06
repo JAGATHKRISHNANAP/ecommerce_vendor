@@ -69,17 +69,17 @@ const Sidebar = ({ open, onToggle, variant }) => {
       title: 'Dashboard',
       icon: <Home size={20} />,
       badge: null,
-      path: '/dashboard',
+      path: '/vendor/dashboard',
     },
     {
       id: 'products',
       title: 'Products',
       icon: <Package size={20} />,
       subItems: [
-        { id: 'all-products', title: 'All Products', path: '/products' },
-        { id: 'add-product', title: 'Add Product', path: '/add-product' },
-        { id: 'categories', title: 'Categories', path: '/categories' },
-        { id: 'add-category', title: 'Add Category', path: '/add-category' },
+        { id: 'all-products', title: 'All Products', path: '/vendor/products' },
+        { id: 'add-product', title: 'Add Product', path: '/vendor/add-product' },
+        { id: 'categories', title: 'Categories', path: '/vendor/categories' },
+        { id: 'add-category', title: 'Add Category', path: '/vendor/add-category' },
         { id: 'inventory', title: 'Inventory' },
       ]
     },
@@ -89,7 +89,7 @@ const Sidebar = ({ open, onToggle, variant }) => {
       icon: <ShoppingCart size={20} />,
       // badge: '12', // Dynamic badge can be implemented later
       badgeColor: 'warning',
-      path: '/orders' // Direct link to orders page, filters handled internally
+      path: '/vendor/orders' // Direct link to orders page, filters handled internally
     },
     {
       id: 'customers',

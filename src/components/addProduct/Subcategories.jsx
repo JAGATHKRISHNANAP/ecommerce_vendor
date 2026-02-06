@@ -107,7 +107,7 @@ const Subcategories = ({ category: propCategory, onBack: propOnBack, onSelectSub
     if (propOnBack) {
       propOnBack();
     } else {
-      navigate('/categories');
+      navigate('/vendor/categories');
     }
   };
 
@@ -201,7 +201,7 @@ const Subcategories = ({ category: propCategory, onBack: propOnBack, onSelectSub
                 Status: {subcategory.is_active ? 'Active' : 'Inactive'}
               </p>
               <button
-                onClick={() => navigate(`/subcategories/${subcategory.subcategory_id}/specifications`)}
+                onClick={() => navigate(`/vendor/subcategories/${subcategory.subcategory_id}/specifications`)}
                 style={{ backgroundColor: '#28a745', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
               >
                 Manage Specifications →

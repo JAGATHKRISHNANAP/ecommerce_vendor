@@ -74,8 +74,8 @@ api.interceptors.response.use(
       // Backend does not currently support refresh tokens.
       // Redirect to login immediately.
       removeToken()
-      if (window.location.pathname !== '/login') {
-         window.location.href = '/login'
+      if (window.location.pathname !== '/vendor/login') {
+         window.location.href = '/vendor/login'
       }
       return Promise.reject(error)
 

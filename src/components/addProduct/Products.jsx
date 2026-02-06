@@ -312,7 +312,7 @@ const Products = ({ viewMode = 'list' }) => {
 
       console.log('Product saved successfully:', result);
 
-      navigate('/products');
+      navigate('/vendor/products');
       fetchProducts();
     } catch (error) {
       console.error('Error saving product:', error);
@@ -323,7 +323,7 @@ const Products = ({ viewMode = 'list' }) => {
   };
 
   const handleCancel = () => {
-    navigate('/products');
+    navigate('/vendor/products');
   };
 
   const handleSpecificationChange = (specName, value) => {
@@ -561,7 +561,7 @@ const Products = ({ viewMode = 'list' }) => {
 
       {!showForm && (
         <button
-          onClick={() => navigate('/add-product')}
+          onClick={() => navigate('/vendor/add-product')}
           disabled={loading}
           style={{
             marginBottom: '20px',

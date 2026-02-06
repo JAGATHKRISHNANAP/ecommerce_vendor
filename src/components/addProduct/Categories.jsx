@@ -43,7 +43,7 @@ const Categories = ({ onSelectCategory, viewMode = 'list' }) => {
     try {
       await api.post('/categories', formData);
       setFormData({ name: '', description: '' });
-      navigate('/categories');
+      navigate('/vendor/categories');
       setError('');
       fetchCategories();
     } catch (error) {
@@ -55,7 +55,7 @@ const Categories = ({ onSelectCategory, viewMode = 'list' }) => {
   };
 
   const handleCancel = () => {
-    navigate('/categories');
+    navigate('/vendor/categories');
     setFormData({ name: '', description: '' });
     setError('');
   };
@@ -72,7 +72,7 @@ const Categories = ({ onSelectCategory, viewMode = 'list' }) => {
 
       {!showForm && (
         <button
-          onClick={() => navigate('/add-category')}
+          onClick={() => navigate('/vendor/add-category')}
           disabled={loading}
           style={{ marginBottom: '20px' }}
         >

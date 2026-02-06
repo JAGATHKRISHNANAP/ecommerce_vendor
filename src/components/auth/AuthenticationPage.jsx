@@ -23,7 +23,7 @@ const AuthenticationPage = () => {
   // Handle successful authentication
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard')
+      navigate('/vendor/dashboard')
     }
   }, [isAuthenticated, navigate])
 
