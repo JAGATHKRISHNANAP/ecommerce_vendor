@@ -27,7 +27,7 @@ const CategoryManagement = () => {
   });
 
   // API Base URL - adjust this to match your backend
-  const API_BASE = 'http://localhost:8000/api/v1';
+  const API_BASE = '/api/v1';
 
   // Fetch categories
   const fetchCategories = async () => {
@@ -286,8 +286,8 @@ const CategoryManagement = () => {
                       )}
                       <div className="flex items-center gap-4 mt-2">
                         <span className={`px-2 py-1 rounded-full text-xs ${category.is_active
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
                           }`}>
                           {category.is_active ? 'Active' : 'Inactive'}
                         </span>
@@ -334,8 +334,8 @@ const CategoryManagement = () => {
                               </span>
                               {subcategory.is_active !== undefined && (
                                 <span className={`px-2 py-1 rounded-full text-xs ${subcategory.is_active
-                                    ? 'bg-green-100 text-green-800'
-                                    : 'bg-red-100 text-red-800'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-red-100 text-red-800'
                                   }`}>
                                   {subcategory.is_active ? 'Active' : 'Inactive'}
                                 </span>

@@ -1,7 +1,7 @@
 // src/services/api/authAPI.js
 import axios from 'axios'
 
-const BASE_URL =  'http://localhost:8000/api/vendor'
+const BASE_URL =  '/api/vendor'
 
 // Create axios instance
 const api = axios.create({

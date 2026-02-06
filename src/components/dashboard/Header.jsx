@@ -63,7 +63,7 @@ const AppHeader = ({ onToggleSidebar }) => {
     if (!user?.vendor_photo_path || imageError) return null;
 
     // Option 1: If your API base URL is available
-    const API_BASE_URL = 'http://localhost:8000'; // Replace with your actual API URL
+    const API_BASE_URL = '/api'; // Replace with your actual API URL
 
     try {
       // Handle different path formats

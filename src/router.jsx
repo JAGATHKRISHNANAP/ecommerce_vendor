@@ -196,7 +196,7 @@ const AppRouter = () => {
     <Routes>
       {/* Root route - redirects based on auth status */}
       <Route
-        path="/"
+        path="/vendor"
         element={
           <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
         }
