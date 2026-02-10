@@ -125,21 +125,25 @@ const AuthenticationPage = () => {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.2)'
             }}>
-              <Shield style={{
-                width: '40px',
-                height: '40px',
-                color: '#667eea'
-              }} />
+              <img
+                src="/elakkiyaboutique_logo.jpg"
+                alt="Logo"
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  objectFit: 'contain'
+                }}
+              />
             </div>
 
             <h1 style={{
-              fontSize: '32px',
+              fontSize: '24px',
               fontWeight: '700',
               color: '#ffffff',
               margin: '0 0 12px 0',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>
-              E c o m m e r c e
+              elakkiyaboutique.com
             </h1>
 
             <p style={{

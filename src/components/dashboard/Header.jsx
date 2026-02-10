@@ -112,20 +112,27 @@ const AppHeader = ({ onToggleSidebar }) => {
           <IconButton onClick={onToggleSidebar} color="inherit">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', fontFamily: 'cursive' }}>
-            E commerce&nbsp;
-            <Typography
-              component="span"
-              variant="caption"
-              sx={{
-                fontSize: 10,
-                color: 'grey.300',
-                fontFamily: 'cursive',
-              }}
-            >
-              Vendor Central
+          <Box display="flex" alignItems="center" gap={1}>
+            <img
+              src="/elakkiyaboutique_logo.jpg"
+              alt="Logo"
+              style={{ width: 32, height: 32, objectFit: 'contain' }}
+            />
+            <Typography variant="h6" sx={{ fontWeight: 'bold', fontFamily: 'cursive' }}>
+              elakkiyaboutique.com&nbsp;
+              <Typography
+                component="span"
+                variant="caption"
+                sx={{
+                  fontSize: 10,
+                  color: 'grey.300',
+                  fontFamily: 'cursive',
+                }}
+              >
+                Vendor Central
+              </Typography>
             </Typography>
-          </Typography>
+          </Box>
         </Box>
 
         {/* Center: Search */}
