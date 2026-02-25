@@ -15,6 +15,7 @@ import Orders from './components/orders/Orders';
 import Categories from './components/addProduct/Categories'
 import Subcategories from './components/addProduct/Subcategories'
 import Specifications from './components/addProduct/Specifications'
+import ThreeAvisionDashboard from './components/analytics/threeAVisionDashboard';
 
 // Simple 404 component
 const NotFound = () => {
@@ -132,6 +133,7 @@ const AppRouter = () => {
         <Route path="/vendor/categories/:categoryId" element={<Subcategories />} />
         <Route path="/vendor/subcategories/:subcategoryId/specifications" element={<Specifications />} />
         <Route path="/vendor/profile" element={<ProfilePage />} />
+        <Route path="/vendor/analytics/3avision" element={<ThreeAvisionDashboard />} /> 
       </Route>
 
       <Route

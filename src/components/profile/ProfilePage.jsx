@@ -43,7 +43,7 @@ const ProfilePage = () => {
     if (previewImage) return previewImage;
     if (!user?.vendor_photo_path) return null;
 
-    const API_BASE_URL = '/api';
+    const API_BASE_URL = 'http://localhost:8000/api';
 
     try {
       if (user.vendor_photo_path.startsWith('http')) {

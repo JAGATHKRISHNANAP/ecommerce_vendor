@@ -102,9 +102,11 @@ const Sidebar = ({ open, onToggle, variant }) => {
       icon: <BarChart3 size={20} />,
       subItems: [
         { id: 'overview', title: 'Overview' },
+        { id: '3Avision', title: '3Avision',path: '/vendor/analytics/3avision' },
         { id: 'sales', title: 'Sales Report' },
         { id: 'traffic', title: 'Traffic Analytics' },
         { id: 'conversion', title: 'Conversion Rate' },
+
       ]
     },
     {
